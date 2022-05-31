@@ -82,6 +82,7 @@ class AppFixtures extends Fixture
             ->setActive(true)
             ->setEmail($faker->email())
             ->setCampus($campus1)
+            ->setUsername($faker->userName())
             ->setPassword(
                 $passwordHasher->hashPassword(
                     $participant1,
@@ -98,6 +99,7 @@ class AppFixtures extends Fixture
             ->setActive(true)
             ->setEmail($faker->email())
             ->setCampus($campus1)
+            ->setUsername($faker->userName())
             ->setPassword(
                 $passwordHasher->hashPassword(
                     $participant2,
