@@ -104,6 +104,7 @@ class AppFixtures extends Fixture
                     $p2pwd
                 )
             );
+
         $manager->persist($participant2);
 
         $manager->flush();

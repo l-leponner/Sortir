@@ -48,6 +48,9 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private $campus;
 
+    #[ORM\Column(type: 'string', length: 100)]
+    private $username;
+
     public function __construct()
     {
         $this->joinedActivities = new ArrayCollection();
@@ -253,6 +256,13 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCampus(?Campus $campus): self
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }
