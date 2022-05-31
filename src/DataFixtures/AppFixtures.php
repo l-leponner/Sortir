@@ -166,8 +166,23 @@ class AppFixtures extends Fixture
                     $laurentpwd
                 )
             );
-
         $this->manager->persist($participantLaurent);
+        $participantAmjad = new Participant();
+        $amjadPwd = '12345';
+        $participantAmjad->setName('Jassouma')
+            ->setFirstname('Amjad')
+            ->setPhone('0605040302')
+            ->setActive(true)
+            ->setEmail('amjad@live.com')
+            ->setCampus($this->faker->randomElement($campuses))
+            ->setUsername('ajassouma')
+            ->setPassword(
+                $this->hasher->hashPassword(
+                    $participantAmjad,
+                    $amjadPwd
+                )
+            );
+        $this->manager->persist($participantAmjad);
 
         $this->manager->flush();
     }
