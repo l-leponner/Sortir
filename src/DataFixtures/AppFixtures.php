@@ -2,9 +2,11 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Activity;
 use App\Entity\Campus;
 use App\Entity\City;
 use App\Entity\Participant;
+use App\Entity\Place;
 use App\Entity\State;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -35,13 +37,8 @@ class AppFixtures extends Fixture
         $this->addCampus();
         $this->addCities();
         $this->addParticipants();
-
-
-
-
-
-
-
+        $this->addPlaces();
+//        $this->addActivities();
 
 
 
@@ -185,7 +182,65 @@ class AppFixtures extends Fixture
         $this->manager->persist($participantAmjad);
 
         $this->manager->flush();
+
+        for ($i=1; $i<20; $i++){
+            $participant = new Participant();
+            $ppwd = 'ppwd';
+            $participant->setName($this->faker->lastName())
+                ->setFirstname($this->faker->firstName())
+                ->setPhone($this->faker->phoneNumber())
+                ->setActive(true)
+                ->setEmail($this->faker->email())
+                ->setCampus($this->faker->randomElement($campuses))
+                ->setUsername($this->faker->userName())
+                ->setPassword(
+                    $this->hasher->hashPassword(
+                        $participant,
+                        $ppwd
+                    )
+                )
+            ;
+
+            $this->manager->persist($participant);
+
+            $this->manager->flush();
+        }
     }
+
+    private function addPlaces()
+    {
+        $placeNames = ['Golf', 'Bar', 'Chez Bibi', 'Fête foraine', 'Plage', 'Karting', 'Cinema'];
+        $cityRepo = $this->manager->getRepository(City::class);
+        $cities = $cityRepo->findAll();
+
+        for ($i=1; $i<20; $i++){
+            $place = new Place();
+            $place->setName($this->faker->randomElement($placeNames))
+                ->setCity($this->faker->randomElement($cities))
+                ->setLatitude($this->faker->latitude())
+                ->setLongitude($this->faker->longitude())
+                ->setStreet($this->faker->streetName())
+            ;
+            $this->manager->persist($place);
+    }
+        $this->manager->flush();
+
+    }
+
+//    private function addActivities()
+//    {
+//        $activitiesNames = ['Billard', 'Course de karting', 'Nouveau film au cinéma', 'Baignade', 'BBQ'];
+//        $campusRepo = $this->manager->getRepository(Campus::class);
+//        $campuses = $campusRepo->findAll();
+//
+//
+//        $activity = new Activity();
+//        $activity->setName($this->faker->randomElement($activitiesNames))
+//            ->setCampus($this->faker->randomElement($campuses))
+//        ->setDateTimeBeginning($this->faker->dateTimeBetween('-6 month', 'now'))
+//        ->setDuration($this->faker->time('H:i:s', new \DateTime()));
+//
+//    }
 
 
 }
