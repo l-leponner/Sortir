@@ -38,7 +38,7 @@ class AppFixtures extends Fixture
         $this->addCities();
         $this->addParticipants();
         $this->addPlaces();
-//        $this->addActivities();
+        $this->addActivities();
 
 
 
@@ -227,20 +227,44 @@ class AppFixtures extends Fixture
 
     }
 
-//    private function addActivities()
-//    {
-//        $activitiesNames = ['Billard', 'Course de karting', 'Nouveau film au cinéma', 'Baignade', 'BBQ'];
-//        $campusRepo = $this->manager->getRepository(Campus::class);
-//        $campuses = $campusRepo->findAll();
-//
-//
-//        $activity = new Activity();
-//        $activity->setName($this->faker->randomElement($activitiesNames))
-//            ->setCampus($this->faker->randomElement($campuses))
-//        ->setDateTimeBeginning($this->faker->dateTimeBetween('-6 month', 'now'))
-//        ->setDuration($this->faker->time('H:i:s', new \DateTime()));
-//
-//    }
+    private function addActivities()
+    {
+        $activitiesNames = ['Billard', 'Course de karting', 'Nouveau film au cinéma', 'Baignade', 'BBQ'];
+        $campusRepo = $this->manager->getRepository(Campus::class);
+        $campuses = $campusRepo->findAll();
+
+        $placeRepo = $this->manager->getRepository(Place::class);
+        $places = $placeRepo->findAll();
+
+        $stateRepo = $this->manager->getRepository(State::class);
+        $states = $stateRepo->findAll();
+
+        $participantRepo = $this->manager->getRepository(Participant::class);
+        $participants = $participantRepo->findAll();
+
+        for ($j = 1; $j<30; $j++){
+            $activity = new Activity();
+            $activity->setName($this->faker->randomElement($activitiesNames))
+                ->setCampus($this->faker->randomElement($campuses))
+                ->setDateTimeBeginning($this->faker->dateTimeBetween('-6 month', 'now'))
+                ->setDuration($this->faker->numberBetween(10, 240))
+                ->setInfosActivity(join($this->faker->words(5)))
+                ->setDateLimitRegistration($this->faker->dateTimeBetween('-5 month', '-2 weeks'))
+                ->setMaxNbRegistrations($this->faker->numberBetween(3, 12))
+                ->setState($this->faker->randomElement($states))
+                ->setPlace($this->faker->randomElement($places))
+                ->setOrganizer($this->faker->randomElement($participants))
+            ;
+            $activity->addParticipant($activity->getOrganizer());
+            for ($i = 1; $i<$activity->getMaxNbRegistrations()-1; $i++){
+                $activity->addParticipant($this->faker->randomElement($participants));
+            }
+            $this->manager->persist($activity);
+        }
+        $this->manager->flush();
+
+
+    }
 
 
 }

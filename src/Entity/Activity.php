@@ -21,7 +21,7 @@ class Activity
     #[ORM\Column(type: 'datetime')]
     private $dateTimeBeginning;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'integer')]
     private $duration;
 
     #[ORM\Column(type: 'date')]
@@ -86,12 +86,12 @@ class Activity
         return $this;
     }
 
-    public function getDuration(): ?\DateTimeInterface
+    public function getDuration(): ?int
     {
         return $this->duration;
     }
 
-    public function setDuration(\DateTimeInterface $duration): self
+    public function setDuration(int $duration): self
     {
         $this->duration = $duration;
 
