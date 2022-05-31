@@ -106,8 +106,23 @@ class AppFixtures extends Fixture
                     $p2pwd
                 )
             );
-
         $manager->persist($participant2);
+        $participant3 = new Participant();
+        $p3pwd = 'p3pwd';
+        $participant3->setName("Jassouma")
+            ->setFirstname("Amjad")
+            ->setPhone($faker->phoneNumber())
+            ->setActive(true)
+            ->setEmail($faker->email())
+            ->setUsername("amjad")
+            ->setCampus($campus1)
+            ->setPassword(
+                $passwordHasher->hashPassword(
+                    $participant3,
+                    $p3pwd
+                )
+            );
+        $manager->persist($participant3);
 
         $manager->flush();
     }
