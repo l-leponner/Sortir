@@ -18,7 +18,46 @@
         {{form_widget(searchForm.campus)}}
         {{form_errors(searchForm.campus)}}
 
+        {{form_label(searchForm.nameKeyword)}}
+        {{form_widget(searchForm.nameKeyword)}}
+        {{form_errors(searchForm.nameKeyword)}}
+
+        {{form_label(searchForm.minDateTimeBeginning)}}
+        {{form_widget(searchForm.minDateTimeBeginning)}}
+        {{form_errors(searchForm.minDateTimeBeginning)}}
+
+        {{form_label(searchForm.maxDateTimeBeginning)}}
+        {{form_widget(searchForm.maxDateTimeBeginning)}}
+        {{form_errors(searchForm.maxDateTimeBeginning)}}
+
+
+        {{form_label(searchForm.filterActiOrganized)}}
+        {{form_widget(searchForm.filterActiOrganized)}}
+        {{form_errors(searchForm.filterActiOrganized)}}
+
+        {{form_label(searchForm.filterActiJoined)}}
+        {{form_widget(searchForm.filterActiJoined)}}
+        {{form_errors(searchForm.filterActiJoined)}}
+
+        {{form_label(searchForm.filterActiNotJoined)}}
+        {{form_widget(searchForm.filterActiNotJoined)}}
+        {{form_errors(searchForm.filterActiNotJoined)}}
+
+        {{form_label(searchForm.filterActiEnded)}}
+        {{form_widget(searchForm.filterActiEnded)}}
+        {{form_errors(searchForm.filterActiEnded)}}
+
+        <button type="submit" name="searchButton" >Rechercher</button>
         {{form_end(searchForm)}}
     </section>
+
+    {%if searchButton != false%}
+        <p>Rechercher cliqué</p>
+        <ul>
+            {%for activity in lstActivities%}
+                <li>{{activity.name}} {{activity.campus.name}}</li>
+            {%endfor%}
+        </ul>
+    {%endif%}
 
 {% endblock %}

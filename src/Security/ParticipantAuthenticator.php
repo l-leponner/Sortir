@@ -50,7 +50,7 @@ class ParticipantAuthenticator extends AbstractLoginFormAuthenticator
         }
 
 
-         return new RedirectResponse($this->urlGenerator->generate('/main'));
+         return new RedirectResponse($this->urlGenerator->generate('index'));
 
     }
 
