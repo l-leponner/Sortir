@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ParticipantController!{% endblock %}
+
+{% block body %}
+    {%if app.user%}
+        {{form()}}
+{#            <h2>Mon profil</h2>#}
+{#        <label > Pseudo : <input type="text" value="{{app.user.userIdentifier}}"> </label>#}
+{#        <br><br>#}
+{#        <label > Prénom : <input type="text" value="{{app.user.firstname}}"></label>#}
+{#        <br><br>#}
+{#        <label > Nom : <input type="text" value="{{app.user.name}}"></label>#}
+{#        <br><br>#}
+{#        <label > Téléphone : <input type="text" value="{{app.user.phone}}"></label>#}
+{#        <br><br>#}
+{#        <label > Mot de passe : <input type="password" value=""></label>#}
+{#        <br><br>#}
+{#        <label > Confirmation : <input type="password" value=""></label>#}
+{#        <br><br>#}
+{#        <label > Campus : <input type="range" value="{{app.user.campus}}"></label>#}
+{#        <br><br>#}
+{#        <label > Ma photo : <input type="file" accept="image/jpegn, image/png" name="Télécherger vers le serveur" ></label>#}
+{#        <button value="">Enregitrer</button>#}
+{#        <button>Annuler</button>#}
+
+
+    {%endif%}
+
+{% endblock %}
