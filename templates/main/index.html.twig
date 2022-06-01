@@ -1,20 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Sortir.com | Homepage{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {%if app.user%}
+        <p>Date du jour : {{date('now')|date("d/m/Y")}}</p>
+        <p>Participant : {{app.user.userIdentifier}}</p>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/wamp64/www/Sortir/src/Controller/MainController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/wamp64/www/Sortir/templates/main/activity.html.twig'|file_link(0) }}">templates/main/index.html.twig</a></code></li>
-    </ul>
-</div>
+    {%endif%}
+
+    <section>
+        <h2>Filtrer les sorties</h2>
+
+        {{form_start(searchForm)}}
+
+        {{form_label(searchForm.campus)}}
+        {{form_widget(searchForm.campus)}}
+        {{form_errors(searchForm.campus)}}
+
+        {{form_label(searchForm.nameKeyword)}}
+        {{form_widget(searchForm.nameKeyword)}}
+        {{form_errors(searchForm.nameKeyword)}}
+
+        {{form_label(searchForm.minDateTimeBeginning)}}
+        {{form_widget(searchForm.minDateTimeBeginning)}}
+        {{form_errors(searchForm.minDateTimeBeginning)}}
+
+        {{form_label(searchForm.maxDateTimeBeginning)}}
+        {{form_widget(searchForm.maxDateTimeBeginning)}}
+        {{form_errors(searchForm.maxDateTimeBeginning)}}
+
+
+        {{form_label(searchForm.filterActiOrganized)}}
+        {{form_widget(searchForm.filterActiOrganized)}}
+        {{form_errors(searchForm.filterActiOrganized)}}
+
+        {{form_label(searchForm.filterActiJoined)}}
+        {{form_widget(searchForm.filterActiJoined)}}
+        {{form_errors(searchForm.filterActiJoined)}}
+
+        {{form_label(searchForm.filterActiNotJoined)}}
+        {{form_widget(searchForm.filterActiNotJoined)}}
+        {{form_errors(searchForm.filterActiNotJoined)}}
+
+        {{form_label(searchForm.filterActiEnded)}}
+        {{form_widget(searchForm.filterActiEnded)}}
+        {{form_errors(searchForm.filterActiEnded)}}
+
+        <button type="submit" name="searchButton" >Rechercher</button>
+        {{form_end(searchForm)}}
+    </section>
+
+    {%if searchButton != false%}
+        <p>Rechercher cliqué</p>
+        <ul>
+            {%for activity in lstActivities%}
+                <li>{{activity.name}} {{activity.campus.name}}</li>
+            {%endfor%}
+        </ul>
+    {%endif%}
+
 {% endblock %}
