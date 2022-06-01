@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ActivityController!{% endblock %}
+
+{% block body %}
+
+    <h1>Créer une sortie</h1>
+
+    <form methode="post">
+        {{ form_rest(form) }}
+        <button type="submit">Enregistrer</button>
+        <button type="submit">Publier la sortie</button>
+        <button type="submit">Annuler</button>
+        {{ form_end(form) }}
+    </form>
+{% endblock %}
