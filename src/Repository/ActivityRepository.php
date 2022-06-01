@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Activity;
+use App\Form\Model\SearchActivityModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,95 @@ class ActivityRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+//    /**
+//    //     * @return Activity[] Returns an array of Activity objects
+//    //     */
+//    public function findByKeyWord($keyWord): array
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.name LIKE :keyWord')
+//            ->setParameter('keyWord', '%'.$keyWord.'%')
+//            ->orderBy('a.dateTimeBeginning', 'DESC')
+////            ->setMaxResults(10) <= si je veux avoir un maximum de résultats
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
+
+    /**
+    //     * @return Activity[] Returns an array of Activity objects
+    //     */
+    public function findByFilters(SearchActivityModel $searchActivityModel, $currentParticipant): array
+    {
+        $participantCampus = $searchActivityModel->getParticipantCampus();
+
+        $nameKeyword = $searchActivityModel->getNameKeyword();
+
+        $minDateTimeBeginning = $searchActivityModel->getMinDateTimeBeginning();
+        $maxDateTimeBeginning = $searchActivityModel->getMaxDateTimeBeginning();
+
+        $filterActiOrganized = $searchActivityModel->isFilterActiOrganized();
+
+        $filterActiJoined = $searchActivityModel->isFilterActiJoined();
+
+        $filterActiNotJoined = $searchActivityModel->isFilterActiNotJoined();
+
+        $filterActiEnded = $searchActivityModel->isFilterActiEnded();
+
+        $queryBuilder = $this->createQueryBuilder('a');
+
+        if ($participantCampus){
+            $queryBuilder
+                ->andWhere('a.campus = :campus')
+                ->setParameter('campus', $participantCampus);
+        }
+        if ($nameKeyword){
+            $queryBuilder
+                ->andWhere('a.name LIKE :keyWord')
+                ->setParameter('keyWord', '%'.$nameKeyword.'%');
+        }
+        if ($minDateTimeBeginning && $maxDateTimeBeginning){
+            $queryBuilder
+                ->andWhere('a.dateTimeBeginning BETWEEN :minDateTimeBeginning AND :maxDateTimeBeginning')
+                ->setParameter('minDateTimeBeginning', $minDateTimeBeginning)
+                ->setParameter('maxDateTimeBeginning', $maxDateTimeBeginning);
+        }
+
+        if ($filterActiOrganized){
+            $queryBuilder
+                ->andWhere('a.organizer = :currentParticipant')
+                ->setParameter('currentParticipant', $currentParticipant)
+            ;
+        }
+
+        if ($filterActiJoined){
+            $queryBuilder
+                ->andWhere(':currentParticipant IN a.participants')
+                ->setParameter('currentParticipant', $currentParticipant)
+            ;
+        }
+        if ($filterActiNotJoined){
+            $queryBuilder
+                ->andWhere(':currentParticipant NOT IN a.participants')
+                ->setParameter('currentParticipant', $currentParticipant)
+            ;
+        }
+
+        if ($filterActiEnded){
+            $queryBuilder
+                ->andWhere('a.state = (Activity ended)')
+
+            ;
+        }
+
+
+        $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
+//            ->setMaxResults(10) <= si je veux avoir un maximum de résultats
+        $query = $queryBuilder->getQuery();
+
+            return $query->getResult();
     }
 
 //    /**

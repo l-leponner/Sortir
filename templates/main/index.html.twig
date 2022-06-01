@@ -13,11 +13,13 @@
     <section>
         <h2>Filtrer les sorties</h2>
 
+
+
         {{form_start(searchForm)}}
 
-        {{form_label(searchForm.campus)}}
-        {{form_widget(searchForm.campus)}}
-        {{form_errors(searchForm.campus)}}
+        {{form_label(searchForm.participantCampus)}}
+        {{form_widget(searchForm.participantCampus)}}
+        {{form_errors(searchForm.participantCampus)}}
 
         {{form_label(searchForm.nameKeyword)}}
         {{form_widget(searchForm.nameKeyword)}}
@@ -56,7 +58,7 @@
         <p>Rechercher cliqué</p>
         <ul>
             {%for activity in lstActivities%}
-                <li>{{activity.name}} {{activity.campus.name}}</li>
+                <li>{{activity.name}} - {{activity.campus.name}} - {{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</li>
             {%endfor%}
         </ul>
     {%endif%}
