@@ -51,6 +51,11 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 100)]
     private $username;
 
+//    public function __toString()
+//    {
+//        return $this->name;
+//    }
+
     public function __construct()
     {
         $this->joinedActivities = new ArrayCollection();
