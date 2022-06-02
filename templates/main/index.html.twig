@@ -53,25 +53,18 @@
         <button type="submit" name="searchButton" >Rechercher</button>
         {{form_end(searchForm)}}
     </section>
+    <div class="flashMessages">
+        {%for label,messages in app.flashes%}
+            {%for message in messages%}
+                <div class="alert-{{label}}">
+                    {{message}}
+                </div>
 
-    {%if searchButton != false%}
-        <p>Rechercher cliqué</p>
-{#        <ul>#}
-{#            {%for activity in lstActivities%}#}
-{#                <li>{{activity.name}} - {{activity.campus.name}} - {{activity.dateTimeBeginning|date("d/m/Y H:i:s")}} {{activity.organizer.username}}</li>#}
-{#            {%endfor%}#}
-{#        </ul>#}
-
-        <div class="flashMessages">
-            {%for label,messages in app.flashes%}
-                {%for message in messages%}
-                    <div class="alert-{{label}}">
-                        {{message}}
-                    </div>
-
-                {%endfor%}
             {%endfor%}
-        </div>
+        {%endfor%}
+    </div>
+    {%if searchButton != false%}
+
         <table>
             <tr>
                 <th>Nom de la sortie</th>
@@ -87,12 +80,22 @@
                 <tr>
                     <td>{{activity.name}}</td>
                     <td>{{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</td>
-                    <td>{{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</td>
+                    <td>{{activity.dateLimitRegistration|date("d/m/Y")}}</td>
                     <td>{{activity.participants|length}} / {{activity.maxNbRegistrations}}</td>
                     <td>{{activity.state.wording}}</td>
-                    <td>{%if app.user in activity.participants%}X{%endif%} </td>
-                    <td>{{activity.organizer.username}}</td>
-                    <td>Actions TODO</td>
+                    <td>{%if app.user in activity.participants%}X{%endif%}</td>
+                    <td><a href="{{path('participant_detail', {'user':activity.organizer.id})}}">{{activity.organizer.username}}</a></td>
+                    <td>
+                        {#Action Afficher#}
+                        {%if activity.state.wording != 'Activity created'%}Afficher {%endif%}
+                        {#Action Se désister#}
+                        {%if app.user in activity.participants%}<span> - </span><a href="{{path('desist', {'activity':activity.id})}}">Se désister</a>{%endif%}
+                        {#Action S'inscrire#}
+                        {%if app.user not in activity.participants%}<span> - </span><a href="{{path('join', {'activity':activity.id})}}">S'inscrire</a>{%endif%}
+
+                        {#Action Modifier + Publier#}
+                        {%if activity.state.wording == 'Activity created'%}Modifier - Publier{%endif%}
+                    </td>
                 </tr>
             {%endfor%}
         </table>

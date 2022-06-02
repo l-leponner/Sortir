@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Activity;
+use App\Entity\Participant;
 use App\Form\SearchType;
 use App\Repository\ActivityRepository;
 use App\Repository\CampusRepository;
@@ -17,11 +19,12 @@ class MainController extends AbstractController
 {
     #[Route('/', name: 'index')]
     public function index(Request $request,
-                          ActivityRepository $activityRepository
+                          ActivityRepository $activityRepository,
+                          StateRepository $stateRepository
                           ): Response
     {
         $currentParticipant = $this->getUser();
-
+//        $lstActivities = $activityRepository->findBy([], ['dateTimeBeginning' => 'DESC']);
 
         $searchActivityModel = new SearchActivityModel();
 //
@@ -35,41 +38,9 @@ class MainController extends AbstractController
 
             $lstActivities = $activityRepository->findBy([], ['dateTimeBeginning' => 'DESC']);
 
-            if ($searchForm->get('participantCampus')->getData()){
-//                $lstActivitiesCampus = $activityRepository->findBy(['campus' => $searchForm->get('campus')->getData()], ); //['dateTimeBeginning' => 'DESC']
-//                $lstActivities = $lstActivitiesCampus;
-                $searchActivityModel->setParticipantCampus($searchForm->get('participantCampus')->getData());
-            }
 
-            if ($searchForm->get('nameKeyword')->getData()){
-//                $keyWord = $searchForm->get('nameKeyword')->getData();
-//                $lstActivitiesKeyword = $activityRepository->findByKeyWord($keyWord);
-//                $lstActivities = $lstActivitiesKeyword;
-                $searchActivityModel->setNameKeyword($searchForm->get('nameKeyword')->getData());
-            }
-
-            if ($searchForm->get('minDateTimeBeginning')->getData()){
-                $searchActivityModel->setMinDateTimeBeginning($searchForm->get('minDateTimeBeginning')->getData());
-            }
-
-            if ($searchForm->get('maxDateTimeBeginning')->getData()){
-                $searchActivityModel->setMaxDateTimeBeginning($searchForm->get('maxDateTimeBeginning')->getData());
-            }
-
-            if ($searchForm->get('filterActiOrganized')->getData()){
-                $searchActivityModel->setFilterActiOrganized($searchForm->get('filterActiOrganized')->getData());
-            }
-            if ($searchForm->get('filterActiJoined')->getData()){
-                $searchActivityModel->setFilterActiJoined($searchForm->get('filterActiJoined')->getData());
-            }
-            if ($searchForm->get('filterActiNotJoined')->getData()){
-                $searchActivityModel->setFilterActiNotJoined($searchForm->get('filterActiNotJoined')->getData());
-            }
-            if ($searchForm->get('filterActiEnded')->getData()){
-                $searchActivityModel->setFilterActiEnded($searchForm->get('filterActiEnded')->getData());
-            }
-
-            $lstActivities = $activityRepository->findByFilters($searchActivityModel, $currentParticipant);
+            $state = $stateRepository->findOneBy(['wording' => 'Activity opened']);
+            $lstActivities = $activityRepository->findByFilters($searchActivityModel, $currentParticipant, $state);
             if (!$lstActivities){
                 $this->addFlash("error", "Pas de sorties associées à la recherche.");
             }
@@ -86,7 +57,34 @@ class MainController extends AbstractController
             'controller_name' => 'MainController',
             'searchForm' => $searchForm->createView(),
             'searchButton' => false,
-
+//            'lstActivities' => $lstActivities
         ]);
+    }
+
+    #[Route('/desist/{activity}', name: 'desist')]
+    public function desist(Activity $activity, ActivityRepository $activityRepository): Response
+    {
+        /**
+         * @var Participant $currentParticipant
+         */
+        $currentParticipant = $this->getUser();
+        $activity->removeParticipant($currentParticipant);
+        $activityRepository->add($activity, true);
+
+        $this->addFlash("success","Désistement validé.");
+        return $this->redirectToRoute('index');
+    }
+
+    #[Route('/join/{activity}', name: 'join')]
+    public function join(Activity $activity, ActivityRepository $activityRepository): Response
+    {
+        /**
+         * @var Participant $currentParticipant
+         */
+        $currentParticipant = $this->getUser();
+        $activity->addParticipant($currentParticipant);
+        $activityRepository->add($activity, true);
+        $this->addFlash("success","Inscription validée.");
+        return $this->redirectToRoute('index');
     }
 }
