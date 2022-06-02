@@ -4,7 +4,18 @@
 
 {% block body %}
     {%if app.user%}
-        <h2>{{app.user.username()}}</h2>
+        <h3>{{user.username()}}</h3>
+        <label for="{{user.firstname()}}">Prénom : </label><span id="user-firstname">{{user.firstname}}</span>
+        <br>
+        <label for="{{user.name()}}">Nom : </label><span id="user-name">{{user.name}}</span>
+        <br>
+        <label for="{{user.phone()}}">Téléphone : </label><span id="user-phone">{{user.phone}}</span>
+        <br>
+        <label for="{{user.email()}}">Email : </label><span id="user-firstname">{{user.email}}</span>
+        <br>
+        <label for="{{user.campus.name}}">Campus : </label><span id="user-firstname">{{user.campus.name}}</span>
+        <br>
+        <a href="{{path('index')}}" class="sidenav-link active" type="submit"><button>Retour</button></a>
     {%endif%}
 
 {% endblock %}
