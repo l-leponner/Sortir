@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir.com | Création de sortie{% endblock %}
+
+{% block body %}
+
+    <h1>Créer une sortie</h1>
+
+    <form methode="post">
+        {{ form_rest(form) }}
+        <button type="submit"><a href="{{path('app_main')}}">Enregistrer</a></button>
+        <button type="submit"><a href="{{path('app_main')}}">Publier la sortie</a></button>
+        <button type="submit"><a href="{{path('app_main')}}">Annuler</a></button>
+        {{ form_end(form) }}
+    </form>
+{% endblock %}
+
+
+{#<button type="button"> <a href="{{path('app_page3')}}">BOUTON QUI MENE VERS LA PAGE 3</a> </button>#}
