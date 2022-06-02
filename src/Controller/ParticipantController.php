@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Participant;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,14 +15,14 @@ class ParticipantController extends AbstractController
 {
 
 
-    #[Route('/detail/{id}', name: 'detail')]
-    public function profile( $id,ParticipantRepository $profile): Response
+    #[Route('/detail/{user}', name: 'detail')]
+    public function profile(?Participant $user,ParticipantRepository $profile): Response
     {
 
-       $user =$profile->find($id);
+
 
         return $this->render('participant/detail.html.twig', [
-        'id' =>$id,
+//        'id' =>$id,
          'user' =>$user
        ]);
     }
