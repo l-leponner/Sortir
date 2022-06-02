@@ -160,28 +160,28 @@ class ChangeState
         if (count($activity->getParticipants()) < $activity->getMaxNbRegistrations() &&
             $activity->getDateLimitRegistration() > new \DateTime()){
             $activity->setState($this->stateRepository->findOneBy(['wording' => 'Activity opened']));
-            $this->activityRepository->add($activity, flush: true);
+            $this->activityRepository->add($activity, true);
         } else {
             $activity->setState($this->stateRepository->findOneBy(['wording' => 'Activity closed']));
-            $this->activityRepository->add($activity, flush: true);
+            $this->activityRepository->add($activity, true);
         }
     }
 
     public function isEnded(Activity $activity){
         if($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute') < new \DateTime()){
             $activity->setState($this->stateRepository->findOneBy(['wording' => 'Activity ended']));
-            $this->activityRepository->add($activity, flush: true);
+            $this->activityRepository->add($activity, true);
         } elseif ($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minutes') > new \DateTime() &&
             $activity->getDateTimeBeginning() < new \DateTime()){
             $activity->setState($this->stateRepository->findOneBy(['wording' => 'Activity in progress']));
-            $this->activityRepository->add($activity, flush: true);
+            $this->activityRepository->add($activity, true);
         }
     }
 
     public function isArchived(Activity $activity){
         if($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute')->modify('+1 month') < new \DateTime()){
             $activity->setState($this->stateRepository->findOneBy(['wording' => 'Activity archived']));
-            $this->activityRepository->add($activity, flush: true);
+            $this->activityRepository->add($activity, true);
         }
     }
 }

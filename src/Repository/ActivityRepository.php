@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Activity;
 use App\Entity\State;
+use App\Repository\StateRepository;
 use App\Form\Model\SearchActivityModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -59,7 +60,7 @@ class ActivityRepository extends ServiceEntityRepository
     /**
     //     * @return Activity[] Returns an array of Activity objects
     //     */
-    public function findByFilters(SearchActivityModel $searchActivityModel, $currentParticipant): array
+    public function findByFilters(SearchActivityModel $searchActivityModel, $currentParticipant, $state): array
     {
         $participantCampus = $searchActivityModel->getParticipantCampus();
 
@@ -124,9 +125,6 @@ class ActivityRepository extends ServiceEntityRepository
         }
 
         if ($filterActiEnded){
-            $stateRepository = $queryBuilder->getEntityManager()->getRepository(StateRepository::class);
-            $state = $stateRepository->findBy(['wording' => 'Activity ended']);
-
             $queryBuilder
                 ->andWhere('a.state = :state')
                 ->setParameter('state', $state)
