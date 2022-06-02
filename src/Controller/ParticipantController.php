@@ -14,14 +14,15 @@ class ParticipantController extends AbstractController
 {
 
 
-    #[Route('/detail', name: 'detail')]
-    public function profile(ParticipantRepository $profile): Response
+    #[Route('/detail/{id}', name: 'detail')]
+    public function profile( $id,ParticipantRepository $profile): Response
     {
 
-       $user =$this->getUser();
-       $myProfile = $profile -> find($user);
-        return $this->render('participant/detail.html.twig', [
+       $user =$profile->find($id);
 
+        return $this->render('participant/detail.html.twig', [
+        'id' =>$id,
+         'user' =>$user
        ]);
     }
     #[Route('/profile', name: 'profile')]
@@ -37,16 +38,16 @@ class ParticipantController extends AbstractController
         if($form->isSubmitted() && $form->isValid() ){
 
 
-            dump($form->get('password')->getData());
+
 
             if($form->get('password')->getData()){
-//                  $user = $form->getData();
-                dump('ici');
+
+
                 $hashPassword = $hasherPassword->hashPassword($user, $form->get('password')->getData());
                 $user->setPassword($hashPassword);
                 $manager->persist($user);
                 $manager ->flush();
-                $this->addFlash('success', 'Mot de passe modifié avec succès.');
+                $this->addFlash('succes', 'Mot de passe modifié avec succès.');
                 return $this->redirectToRoute('participant_profile');
             }
 
@@ -63,38 +64,6 @@ class ParticipantController extends AbstractController
             'editProfilForm' => $form->createView()
         ]);
     }
-
-
-
-
-//    public function edit( ParticipantRepository $repo, Request $request): Response
-//    {
-//       $user =$this->getUser();
-////        if($em !== $participant){
-////            return $this ->redirectToRoute("app_login");
-////        }
-//
-//
-//        $profileForm = $this ->createForm(ParticipantType::class, $user);
-//        $profileForm->handleRequest($request);
-//
-//        if($profileForm->isSubmitted()&&$profileForm->isValid()){
-////            $user =$profileForm ->getData();
-////            $manager ->persist($user);
-////            $manager ->flush();
-//            $repo ->add($user, true);
-//            $this -> addFlash("success", "Profil modifié avec succès !");
-//
-//            return $this ->redirectToRoute('index');
-//        }
-//
-//
-//
-//        return $this ->render('participant/profile.html.twig', [
-//            'profilForm' => $profileForm->createView()
-//        ]);
-//
-//    }
 
 
 }

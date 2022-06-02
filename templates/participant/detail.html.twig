@@ -1,17 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier mon profile{% endblock %}
+{% block title %}Profil de {{ user.username}}{% endblock %}
 
 {% block body %}
-{#    {%if app.user%}#}
-{#    {{form(profilForm)}}#}
-
-{#        {{form_start(profileForm)}}#}
-{#        {{form_label(profilForm)}}#}
-{#        {{form_widget(profilForm)}}#}
-{#        {{form_errors(profilForm)}}#}
-{#        {{form_end(profilForm)}}#}
-{#        <a href="{{path('participant_profile')}}" class="btn shadow-1 rounded-1 blue">Normal button</a>#}
+    {%if app.user%}
+        <h2>{{app.user.username()}}</h2>
     {%endif%}
 
 {% endblock %}

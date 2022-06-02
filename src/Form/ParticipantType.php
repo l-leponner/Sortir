@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Campus;
+
 use App\Entity\Participant;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -132,6 +132,13 @@ class ParticipantType extends AbstractType
                 'id' => 'loginBtn'
             ]
            ]);
+//            ->add('cancel', SubmitType::class, [
+//                'label' => 'Annuler',
+//                'attr' => [
+//                    'class' => 'cancelBtn',
+//                    'id' => 'cancelBtn'
+//                ]
+//            ]);
 
     }
 

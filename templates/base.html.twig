@@ -24,10 +24,18 @@
         </div>
     {%endblock%}
     <h1 class="h3 mb-3 font-weight-normal">Logo Sortir.com</h1>
-
-    {%for message in app.flashes('success')%}
-        {{message}}
+    {%for label,messages in app.flashes%}
+        {%for message in messages%}
+            <div class="alert-{{label}}">
+                {{message}}
+            </div>
+        {%endfor%}
     {%endfor%}
+{#    {%for label,message in app.flashes%}#}
+{#        <div class="alert-{{label}}">#}
+{#            {{message}}#}
+{#        </div>#}
+{#    {%endfor%}#}
         {% block body %}
 
         {% endblock %}

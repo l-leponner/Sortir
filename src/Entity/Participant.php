@@ -48,13 +48,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private $campus;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(type: 'string', length: 100, unique: true)]
     private $username;
-
-//    public function __toString()
-//    {
-//        return $this->name;
-//    }
 
     public function __construct()
     {
