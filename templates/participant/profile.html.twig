@@ -1,10 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ParticipantController!{% endblock %}
+{% block title %}Modifier mon profil{% endblock %}
 
 {% block body %}
+
     {%if app.user%}
-        {{form()}}
+
+
+        <h2 class="text-center mt-4">Modifier mon profil</h2>
+
+            {{ form_start(editProfilForm) }}
+            {{ form_errors(editProfilForm) }}
+            {{ form_row(editProfilForm)}}
+            {{ form_end(editProfilForm) }}
+        <a href="{{path('index')}}" class="sidenav-link active" type="submit"><button>Annuler</button></a>
+
+
+{##}
 {#            <h2>Mon profil</h2>#}
 {#        <label > Pseudo : <input type="text" value="{{app.user.userIdentifier}}"> </label>#}
 {#        <br><br>#}

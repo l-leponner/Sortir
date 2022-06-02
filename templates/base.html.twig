@@ -18,16 +18,24 @@
         <div id="example-sidenav" data-ax="sidenav" class="sidenav shadow-1 sidenav-fixed white">
 
             <a href="{{path('index')}}" class="sidenav-link active">Accueil</a>
-            <a href="{{path('profile')}}" class="sidenav-link">Mon profil</a>
+            <a href="{{path('participant_profile')}}" class="sidenav-link">Mon profil</a>
             <a href="{{path('app_logout')}}" class="sidenav-link">Se déconnecter</a>
 
         </div>
     {%endblock%}
     <h1 class="h3 mb-3 font-weight-normal">Logo Sortir.com</h1>
-
-    {%for message in app.flashes('success')%}
-        {{message}}
+    {%for label,messages in app.flashes%}
+        {%for message in messages%}
+            <div class="alert-{{label}}">
+                {{message}}
+            </div>
+        {%endfor%}
     {%endfor%}
+{#    {%for label,message in app.flashes%}#}
+{#        <div class="alert-{{label}}">#}
+{#            {{message}}#}
+{#        </div>#}
+{#    {%endfor%}#}
         {% block body %}
 
         {% endblock %}
