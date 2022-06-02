@@ -84,12 +84,17 @@
                     <td>{{activity.participants|length}} / {{activity.maxNbRegistrations}}</td>
                     <td>{{activity.state.wording}}</td>
                     <td>{%if app.user in activity.participants%}X{%endif%}</td>
-                    <td>{{activity.organizer.username}}</td>
+                    <td><a href="{{path('participant_detail', {'user':activity.organizer.id})}}">{{activity.organizer.username}}</a></td>
                     <td>
+                        {#Action Afficher#}
+                        {%if activity.state.wording != 'Activity created'%}Afficher {%endif%}
                         {#Action Se désister#}
-                        {%if app.user in activity.participants%}<a href="{{path('desist', {'activity':activity.id})}}">Se désister</a>{%endif%}
+                        {%if app.user in activity.participants%}<span> - </span><a href="{{path('desist', {'activity':activity.id})}}">Se désister</a>{%endif%}
                         {#Action S'inscrire#}
-                        {%if app.user not in activity.participants%}<a href="{{path('join', {'activity':activity.id})}}">S'inscrire</a>{%endif%}
+                        {%if app.user not in activity.participants%}<span> - </span><a href="{{path('join', {'activity':activity.id})}}">S'inscrire</a>{%endif%}
+
+                        {#Action Modifier + Publier#}
+                        {%if activity.state.wording == 'Activity created'%}Modifier - Publier{%endif%}
                     </td>
                 </tr>
             {%endfor%}

@@ -17,7 +17,7 @@ use App\Form\Model\SearchActivityModel;
 
 class MainController extends AbstractController
 {
-    #[Route('/', name: 'app_main')]
+    #[Route('/', name: 'index')]
     public function index(Request $request,
                           ActivityRepository $activityRepository,
                           StateRepository $stateRepository
