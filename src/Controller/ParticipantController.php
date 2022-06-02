@@ -3,76 +3,98 @@
 namespace App\Controller;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 #[Route('/participant', name: 'participant_')]
 class ParticipantController extends AbstractController
 {
-    #[Route('/myProfile', name: 'myProfile')]
+
+
+    #[Route('/detail', name: 'detail')]
     public function profile(ParticipantRepository $profile): Response
     {
-//        $this ->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-//
+
        $user =$this->getUser();
-//
-//      return new Response($user -> getUserIdentifier());
-//        $myProfile = $profile -> find($user);
-        return $this->render('participant/profile.html.twig', [
-//            'app.user' => $this,
-//            'myProfile' => $myProfile
-        ]);
+       $myProfile = $profile -> find($user);
+        return $this->render('participant/detail.html.twig', [
+
+       ]);
     }
     #[Route('/profile', name: 'profile')]
-    public function edit(ParticipantRepository $part, Request $request): Response
+    public function editProfil(Request $request,EntityManagerInterface $manager,   UserPasswordHasherInterface $hasherPassword ): Response
     {
-        $user =$this->getUser();
-        $myProfile =$part ->find($user);
-        $profileForm = $this ->createForm(ParticipantType::class, $myProfile);
-        $profileForm->handleRequest($request);
 
-        if($profileForm->isSubmitted()&&$profileForm->isValid()){
+        $user = $this->getUser();
 
-            $part ->add($myProfile, true);
-            $this -> addFlash("success", "Profil modifié avec succès !");
-            return $this -> redirectToRoute("index");
+        $form = $this->createForm(ParticipantType::class, $user);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid() ){
+
+
+            dump($form->get('password')->getData());
+
+            if($form->get('password')->getData()){
+//                  $user = $form->getData();
+                dump('ici');
+                $hashPassword = $hasherPassword->hashPassword($user, $form->get('password')->getData());
+                $user->setPassword($hashPassword);
+                $manager->persist($user);
+                $manager ->flush();
+                $this->addFlash('success', 'Mot de passe modifié avec succès.');
+                return $this->redirectToRoute('participant_profile');
+            }
+
+
+            $user = $form->getData();
+            $manager->persist($user);
+            $manager ->flush();
+            $this->addFlash('success', 'Profil modifié avec succès.');
+            return $this->redirectToRoute('participant_profile');
         }
-        return $this ->render('participant/detail.html.twig', [
-            'profilForm' => $profileForm->createView()
+
+
+        return $this->render('participant/profile.html.twig', [
+            'editProfilForm' => $form->createView()
         ]);
-
-
-
-
-
-
-
-
-
-
-
     }
-//    $form =$this ->createFormBuilder()
-//        ->add('Pseudo', TextType::class,[
-//            'label' => 'Pseudo : '
-//        ])
-//        ->add('Prénom', TextType::class,[
-//            'label' => 'Pseudo : '
-//        ])
-//        ->add('Nom', TextType::class,[
-//            'label' => 'Nom : '
-//        ])
-//        ->add('Téléphone', Integer::class,[
-//            'label' => 'Téléphone : '
-//        ])
-//        ->add('Email', TextType::class,[
-//            'label' => 'Email : '
-//        ])
-//        ->getForm();
-//        return $this ->render('participant/detail.html.twig',[
-//            'form' => $form ->createView()
+
+
+
+
+//    public function edit( ParticipantRepository $repo, Request $request): Response
+//    {
+//       $user =$this->getUser();
+////        if($em !== $participant){
+////            return $this ->redirectToRoute("app_login");
+////        }
+//
+//
+//        $profileForm = $this ->createForm(ParticipantType::class, $user);
+//        $profileForm->handleRequest($request);
+//
+//        if($profileForm->isSubmitted()&&$profileForm->isValid()){
+////            $user =$profileForm ->getData();
+////            $manager ->persist($user);
+////            $manager ->flush();
+//            $repo ->add($user, true);
+//            $this -> addFlash("success", "Profil modifié avec succès !");
+//
+//            return $this ->redirectToRoute('index');
+//        }
+//
+//
+//
+//        return $this ->render('participant/profile.html.twig', [
+//            'profilForm' => $profileForm->createView()
 //        ]);
+//
 //    }
+
 
 }

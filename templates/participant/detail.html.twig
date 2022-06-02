@@ -3,8 +3,15 @@
 {% block title %}Modifier mon profile{% endblock %}
 
 {% block body %}
-    {%if app.user%}
-    {{form(profilForm)}}
+{#    {%if app.user%}#}
+{#    {{form(profilForm)}}#}
+
+{#        {{form_start(profileForm)}}#}
+{#        {{form_label(profilForm)}}#}
+{#        {{form_widget(profilForm)}}#}
+{#        {{form_errors(profilForm)}}#}
+{#        {{form_end(profilForm)}}#}
+{#        <a href="{{path('participant_profile')}}" class="btn shadow-1 rounded-1 blue">Normal button</a>#}
     {%endif%}
 
 {% endblock %}
