@@ -84,7 +84,7 @@
                     <td>{{activity.participants|length}} / {{activity.maxNbRegistrations}}</td>
                     <td>{{activity.state.wording}}</td>
                     <td>{%if app.user in activity.participants%}X{%endif%}</td>
-                    <td><a href="{{path('participant_detail', {'user':activity.organizer.id})}}">{{activity.organizer.username}}</a></td>
+{#                    <td><a href="{{path('participant_detail', {'user':activity.organizer.id})}}">{{activity.organizer.username}}</a></td>#}
                     <td>
                         {#Action Afficher#}
                         {%if activity.state.wording != 'Activity created'%}Afficher {%endif%}
