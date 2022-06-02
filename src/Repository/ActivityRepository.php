@@ -133,7 +133,7 @@ class ActivityRepository extends ServiceEntityRepository
         }
 
 
-//        $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
+        $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
 //            ->setMaxResults(10) <= si je veux avoir un maximum de résultats
         $query = $queryBuilder->getQuery();
 
