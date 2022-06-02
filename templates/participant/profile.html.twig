@@ -1,13 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sortir.com | Profile{% endblock %}
+{% block title %}Hello ParticipantController!{% endblock %}
 
 {% block body %}
-    <h1>Mon profil</h1>
     {%if app.user%}
         {{form()}}
-{#         <h1>Mon profil</h1> #}
-        {#        <label > Pseudo : <input type="text" value="{{app.user.userIdentifier}}"> </label>#}
+{#            <h2>Mon profil</h2>#}
+{#        <label > Pseudo : <input type="text" value="{{app.user.userIdentifier}}"> </label>#}
 {#        <br><br>#}
 {#        <label > Prénom : <input type="text" value="{{app.user.firstname}}"></label>#}
 {#        <br><br>#}
