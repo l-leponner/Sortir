@@ -13,11 +13,13 @@
     <section>
         <h2>Filtrer les sorties</h2>
 
+
+
         {{form_start(searchForm)}}
 
-        {{form_label(searchForm.campus)}}
-        {{form_widget(searchForm.campus)}}
-        {{form_errors(searchForm.campus)}}
+        {{form_label(searchForm.participantCampus)}}
+        {{form_widget(searchForm.participantCampus)}}
+        {{form_errors(searchForm.participantCampus)}}
 
         {{form_label(searchForm.nameKeyword)}}
         {{form_widget(searchForm.nameKeyword)}}
@@ -30,35 +32,72 @@
         {{form_label(searchForm.maxDateTimeBeginning)}}
         {{form_widget(searchForm.maxDateTimeBeginning)}}
         {{form_errors(searchForm.maxDateTimeBeginning)}}
-
+        <br>
 
         {{form_label(searchForm.filterActiOrganized)}}
         {{form_widget(searchForm.filterActiOrganized)}}
         {{form_errors(searchForm.filterActiOrganized)}}
-
+        <br>
         {{form_label(searchForm.filterActiJoined)}}
         {{form_widget(searchForm.filterActiJoined)}}
         {{form_errors(searchForm.filterActiJoined)}}
-
+        <br>
         {{form_label(searchForm.filterActiNotJoined)}}
         {{form_widget(searchForm.filterActiNotJoined)}}
         {{form_errors(searchForm.filterActiNotJoined)}}
-
+        <br>
         {{form_label(searchForm.filterActiEnded)}}
         {{form_widget(searchForm.filterActiEnded)}}
         {{form_errors(searchForm.filterActiEnded)}}
-
+        <br>
         <button type="submit" name="searchButton" >Rechercher</button>
         {{form_end(searchForm)}}
     </section>
 
     {%if searchButton != false%}
         <p>Rechercher cliqué</p>
-        <ul>
-            {%for activity in lstActivities%}
-                <li>{{activity.name}} {{activity.campus.name}}</li>
+{#        <ul>#}
+{#            {%for activity in lstActivities%}#}
+{#                <li>{{activity.name}} - {{activity.campus.name}} - {{activity.dateTimeBeginning|date("d/m/Y H:i:s")}} {{activity.organizer.username}}</li>#}
+{#            {%endfor%}#}
+{#        </ul>#}
+
+        <div class="flashMessages">
+            {%for label,messages in app.flashes%}
+                {%for message in messages%}
+                    <div class="alert-{{label}}">
+                        {{message}}
+                    </div>
+
+                {%endfor%}
             {%endfor%}
-        </ul>
+        </div>
+        <table>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits/places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+            {%for activity in lstActivities%}
+                <tr>
+                    <td>{{activity.name}}</td>
+                    <td>{{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</td>
+                    <td>{{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</td>
+                    <td>{{activity.participants|length}} / {{activity.maxNbRegistrations}}</td>
+                    <td>{{activity.state.wording}}</td>
+                    <td>{%if app.user in activity.participants%}X{%endif%} </td>
+                    <td>{{activity.organizer.username}}</td>
+                    <td>Actions TODO</td>
+                </tr>
+            {%endfor%}
+        </table>
+
+
     {%endif%}
 
 {% endblock %}

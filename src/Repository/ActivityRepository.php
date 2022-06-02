@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Activity;
+use App\Entity\State;
+use App\Form\Model\SearchActivityModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +39,107 @@ class ActivityRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+//    /**
+//    //     * @return Activity[] Returns an array of Activity objects
+//    //     */
+//    public function findByKeyWord($keyWord): array
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.name LIKE :keyWord')
+//            ->setParameter('keyWord', '%'.$keyWord.'%')
+//            ->orderBy('a.dateTimeBeginning', 'DESC')
+////            ->setMaxResults(10) <= si je veux avoir un maximum de résultats
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
+
+    /**
+    //     * @return Activity[] Returns an array of Activity objects
+    //     */
+    public function findByFilters(SearchActivityModel $searchActivityModel, $currentParticipant): array
+    {
+        $participantCampus = $searchActivityModel->getParticipantCampus();
+
+        $nameKeyword = $searchActivityModel->getNameKeyword();
+
+        $minDateTimeBeginning = $searchActivityModel->getMinDateTimeBeginning();
+        $maxDateTimeBeginning = $searchActivityModel->getMaxDateTimeBeginning();
+
+        $filterActiOrganized = $searchActivityModel->isFilterActiOrganized();
+
+        $filterActiJoined = $searchActivityModel->isFilterActiJoined();
+
+        $filterActiNotJoined = $searchActivityModel->isFilterActiNotJoined();
+
+        $filterActiEnded = $searchActivityModel->isFilterActiEnded();
+
+        $queryBuilder = $this->createQueryBuilder('a');
+
+        if ($participantCampus){
+            $queryBuilder
+                ->andWhere('a.campus = :campus')
+                ->setParameter('campus', $participantCampus);
+        }
+        if ($nameKeyword){
+            $queryBuilder
+                ->andWhere('a.name LIKE :keyWord')
+                ->setParameter('keyWord', '%'.$nameKeyword.'%');
+        }
+        if ($minDateTimeBeginning){
+            $minDateTimeBeginning->format('Y-m-d H:i:s');
+
+            $queryBuilder
+                ->andWhere('a.dateTimeBeginning > :minDateTimeBeginning')
+                ->setParameter('minDateTimeBeginning', $minDateTimeBeginning);
+
+        }
+        if ($maxDateTimeBeginning){
+            $maxDateTimeBeginning->format('Y-m-d H:i:s');
+            $queryBuilder
+                ->andWhere('a.dateTimeBeginning < :maxDateTimeBeginning')
+                ->setParameter('maxDateTimeBeginning', $maxDateTimeBeginning);
+        }
+
+        if ($filterActiOrganized){
+            $queryBuilder
+                ->andWhere('a.organizer = :currentParticipant')
+                ->setParameter('currentParticipant', $currentParticipant)
+            ;
+        }
+
+        if ($filterActiJoined){
+            $queryBuilder
+                ->andWhere(':currentParticipant MEMBER OF a.participants')
+                ->setParameter('currentParticipant', $currentParticipant)
+            ;
+        }
+        if ($filterActiNotJoined){
+            $queryBuilder
+                ->andWhere(':currentParticipant NOT MEMBER OF a.participants')
+                ->setParameter('currentParticipant', $currentParticipant)
+            ;
+        }
+
+        if ($filterActiEnded){
+            $stateRepository = $queryBuilder->getEntityManager()->getRepository(StateRepository::class);
+            $state = $stateRepository->findBy(['wording' => 'Activity ended']);
+
+            $queryBuilder
+                ->andWhere('a.state = :state')
+                ->setParameter('state', $state)
+
+            ;
+        }
+
+
+//        $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
+//            ->setMaxResults(10) <= si je veux avoir un maximum de résultats
+        $query = $queryBuilder->getQuery();
+
+            return $query->getResult();
     }
 
 //    /**
