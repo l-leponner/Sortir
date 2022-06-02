@@ -23,24 +23,21 @@ class MainController extends AbstractController
                           StateRepository $stateRepository
                           ): Response
     {
+
+        $isUser = $this->isGranted("ROLE_USER");
+        if (!$isUser){
+            return $this->redirectToRoute('app_login');
+        }
         $currentParticipant = $this->getUser();
-//        $lstActivities = $activityRepository->findBy([], ['dateTimeBeginning' => 'DESC']);
 
         $searchActivityModel = new SearchActivityModel();
-//
-//        $searchActivityModel->setParticipantCampus($currentParticipant->getCampus());
 
         $searchForm = $this->createForm(SearchType::class, $searchActivityModel);
         $searchForm->handleRequest($request);
 
-
         if ($searchForm->isSubmitted() && $searchForm->isValid()){
 
-            $lstActivities = $activityRepository->findBy([], ['dateTimeBeginning' => 'DESC']);
-
-
-            $state = $stateRepository->findOneBy(['wording' => 'Activity opened']);
-            $lstActivities = $activityRepository->findByFilters($searchActivityModel, $currentParticipant, $state);
+            $lstActivities = $activityRepository->findByFilters($searchActivityModel, $currentParticipant, $stateRepository);
             if (!$lstActivities){
                 $this->addFlash("error", "Pas de sorties associées à la recherche.");
             }
@@ -57,7 +54,7 @@ class MainController extends AbstractController
             'controller_name' => 'MainController',
             'searchForm' => $searchForm->createView(),
             'searchButton' => false,
-//            'lstActivities' => $lstActivities
+
         ]);
     }
 
