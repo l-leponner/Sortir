@@ -38,15 +38,13 @@ class SearchType extends AbstractType
             ->add('minDateTimeBeginning', DateTimeType::class, [
                 'label' => 'Entre',
                 'required' => false,
-                'date_widget' => 'single_text',
-                'time_widget' => 'single_text'
+                'widget' => 'single_text'
 
             ])
             ->add('maxDateTimeBeginning', DateTimeType::class, [
                 'label' => 'et',
                 'required' => false,
-                'date_widget' => 'single_text',
-                'time_widget' => 'single_text'
+                'widget' => 'single_text'
             ])
 
             ->add('participantCampus', EntityType::class, [
@@ -56,6 +54,7 @@ class SearchType extends AbstractType
 //                'placeholder' => '-- Select a campus --',
                 'required' => false,
                'data' => $this->security->getUser()->getCampus()
+//               'data' => 'participantCampus'
 
             ])
             ->add('filterActiOrganized', CheckboxType::class, [

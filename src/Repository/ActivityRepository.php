@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Activity;
+use App\Entity\State;
 use App\Form\Model\SearchActivityModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -87,10 +88,18 @@ class ActivityRepository extends ServiceEntityRepository
                 ->andWhere('a.name LIKE :keyWord')
                 ->setParameter('keyWord', '%'.$nameKeyword.'%');
         }
-        if ($minDateTimeBeginning && $maxDateTimeBeginning){
+        if ($minDateTimeBeginning){
+            $minDateTimeBeginning->format('Y-m-d H:i:s');
+
             $queryBuilder
-                ->andWhere('a.dateTimeBeginning BETWEEN :minDateTimeBeginning AND :maxDateTimeBeginning')
-                ->setParameter('minDateTimeBeginning', $minDateTimeBeginning)
+                ->andWhere('a.dateTimeBeginning > :minDateTimeBeginning')
+                ->setParameter('minDateTimeBeginning', $minDateTimeBeginning);
+
+        }
+        if ($maxDateTimeBeginning){
+            $maxDateTimeBeginning->format('Y-m-d H:i:s');
+            $queryBuilder
+                ->andWhere('a.dateTimeBeginning < :maxDateTimeBeginning')
                 ->setParameter('maxDateTimeBeginning', $maxDateTimeBeginning);
         }
 
@@ -103,26 +112,30 @@ class ActivityRepository extends ServiceEntityRepository
 
         if ($filterActiJoined){
             $queryBuilder
-                ->andWhere(':currentParticipant IN a.participants')
+                ->andWhere(':currentParticipant MEMBER OF a.participants')
                 ->setParameter('currentParticipant', $currentParticipant)
             ;
         }
         if ($filterActiNotJoined){
             $queryBuilder
-                ->andWhere(':currentParticipant NOT IN a.participants')
+                ->andWhere(':currentParticipant NOT MEMBER OF a.participants')
                 ->setParameter('currentParticipant', $currentParticipant)
             ;
         }
 
         if ($filterActiEnded){
+            $stateRepository = $queryBuilder->getEntityManager()->getRepository(StateRepository::class);
+            $state = $stateRepository->findBy(['wording' => 'Activity ended']);
+
             $queryBuilder
-                ->andWhere('a.state = (Activity ended)')
+                ->andWhere('a.state = :state')
+                ->setParameter('state', $state)
 
             ;
         }
 
 
-        $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
+//        $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
 //            ->setMaxResults(10) <= si je veux avoir un maximum de résultats
         $query = $queryBuilder->getQuery();
 

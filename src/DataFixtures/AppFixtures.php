@@ -229,7 +229,7 @@ class AppFixtures extends Fixture
 
     private function addActivities()
     {
-        $activitiesNames = ['Billard', 'Course de karting', 'Nouveau film au cinéma', 'Baignade', 'BBQ'];
+        $activitiesNames = ['Billard', 'Course de karting', 'Nouveau film au cinéma', 'Baignade', 'BBQ', 'Belotte', 'LAN'];
         $campusRepo = $this->manager->getRepository(Campus::class);
         $campuses = $campusRepo->findAll();
 
@@ -261,6 +261,24 @@ class AppFixtures extends Fixture
             }
             $this->manager->persist($activity);
         }
+
+//        $activity = new Activity();
+//        $activity->setName($this->faker->randomElement($activitiesNames))
+//            ->setCampus($this->faker->randomElement($campuses))
+//            ->setDateTimeBeginning($this->faker->dateTimeBetween('-6 month', 'now'))
+//            ->setDuration($this->faker->numberBetween(10, 240))
+//            ->setInfosActivity(join($this->faker->words(5)))
+//            ->setDateLimitRegistration($this->faker->dateTimeBetween('-5 month', '-2 weeks'))
+//            ->setMaxNbRegistrations($this->faker->numberBetween(3, 12))
+//            ->setState($this->faker->randomElement($states))
+//            ->setPlace($this->faker->randomElement($places))
+//            ->setOrganizer($participantRepo->findOneBy(['username' => 'LaurentLP']))
+//        ;
+//        $activity->addParticipant($activity->getOrganizer());
+//        for ($i = 1; $i<$activity->getMaxNbRegistrations()-1; $i++){
+//            $activity->addParticipant($this->faker->randomElement($participants));
+//        }
+//        $this->manager->persist($activity);
         $this->manager->flush();
 
 
