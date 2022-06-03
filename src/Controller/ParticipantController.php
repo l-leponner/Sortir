@@ -3,7 +3,6 @@
 namespace App\Controller;
 use App\Entity\Participant;
 use App\Form\ParticipantType;
-use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,18 +13,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class ParticipantController extends AbstractController
 {
 
-
     #[Route('/detail/{user}', name: 'detail')]
-    public function profile(?Participant $user,ParticipantRepository $profile): Response
+    public function profile(?Participant $user): Response
     {
-
-
-
         return $this->render('participant/detail.html.twig', [
-//        'id' =>$id,
-         'user' =>$user
+            'user' =>$user
        ]);
     }
+
     #[Route('/profile', name: 'profile')]
     public function editProfil(Request $request,EntityManagerInterface $manager,   UserPasswordHasherInterface $hasherPassword ): Response
     {
@@ -38,11 +33,7 @@ class ParticipantController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid() ){
 
-
-
-
             if($form->get('password')->getData()){
-
 
                 $hashPassword = $hasherPassword->hashPassword($user, $form->get('password')->getData());
                 $user->setPassword($hashPassword);
@@ -52,19 +43,21 @@ class ParticipantController extends AbstractController
                 return $this->redirectToRoute('participant_profile');
             }
 
-
             $user = $form->getData();
+
             $manager->persist($user);
+
             $manager ->flush();
+
             $this->addFlash('success', 'Profil modifié avec succès.');
+
             return $this->redirectToRoute('participant_profile');
         }
-
 
         return $this->render('participant/profile.html.twig', [
             'editProfilForm' => $form->createView()
         ]);
     }
-
-
 }
+
+
