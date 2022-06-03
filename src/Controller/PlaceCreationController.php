@@ -15,7 +15,7 @@ class PlaceCreationController extends AbstractController
     #[Route('/place/creation', name: 'place_creation')]
     public function createPlace(Request $request, PlaceRepository $placeRepository): Response
     {
-
+//        $referer = filter_var($request->headers->get('referer'), FILTER_SANITIZE_URL);
         $place = new Place();
 
         $placeCreationForm = $this->createForm(PlaceCreationType::class, $place);
@@ -24,6 +24,7 @@ class PlaceCreationController extends AbstractController
         if ($placeCreationForm->isSubmitted() && $placeCreationForm->isValid()){
             $placeRepository->add($place, true);
             $this->addFlash("success","Lieu enregistré.");
+//            return $this->redirect($referer);
             return $this->redirectToRoute('index');
         }
         return $this->render('place_creation/creation.html.twig', [
