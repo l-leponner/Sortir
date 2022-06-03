@@ -60,7 +60,7 @@ class ActivityRepository extends ServiceEntityRepository
     /**
     //     * @return Activity[] Returns an array of Activity objects
     //     */
-    public function findByFilters(SearchActivityModel $searchActivityModel, $currentParticipant, $state): array
+    public function findByFilters(SearchActivityModel $searchActivityModel, $currentParticipant, $stateRepository): array
     {
         $participantCampus = $searchActivityModel->getParticipantCampus();
 
@@ -125,6 +125,7 @@ class ActivityRepository extends ServiceEntityRepository
         }
 
         if ($filterActiEnded){
+            $state = $stateRepository->findOneBy(['wording' => 'Activity opened']);
             $queryBuilder
                 ->andWhere('a.state = :state')
                 ->setParameter('state', $state)
@@ -133,7 +134,7 @@ class ActivityRepository extends ServiceEntityRepository
         }
 
 
-//        $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
+        $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
 //            ->setMaxResults(10) <= si je veux avoir un maximum de résultats
         $query = $queryBuilder->getQuery();
 
