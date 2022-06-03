@@ -15,7 +15,8 @@
         <br>
         <label for="{{user.campus.name}}">Campus : </label><span id="user-firstname">{{user.campus.name}}</span>
         <br>
-        <a href="{{path('index')}}" class="sidenav-link active" type="submit"><button>Retour</button></a>
+        <a href="{{path('index')}}" class="sidenav-link active" type="submit"><button>Retour à l'accueil</button></a>
+        <button onClick="window.history.back();" type="button">Page précédente</button>
     {%endif%}
 
 {% endblock %}

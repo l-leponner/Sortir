@@ -87,7 +87,7 @@
                     <td><a href="{{path('participant_detail', {'user':activity.organizer.id})}}">{{activity.organizer.username}}</a></td>
                     <td>
                         {#Action Afficher#}
-                        {%if activity.state.wording != 'Activity created'%}<button><a href="{{path('change_activity', {'activity':activity.id})}}">Afficher : path TODO</a></button> {%endif%}
+                        {%if activity.state.wording != 'Activity created'%}<button><a href="{{path('displayActivity_display', {'activity':activity.id})}}">Afficher</a></button> {%endif%}
                         {#Action Se désister#}
                         {%if app.user in activity.participants%}<button><a href="{{path('desist', {'activity':activity.id})}}">Se désister</a></button>{%endif%}
                         {#Action S'inscrire#}

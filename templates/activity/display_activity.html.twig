@@ -5,6 +5,32 @@
 {% block body %}
 
     <h2>Afficher une sortie</h2>
-         {{activity}}
-        {{dump(activity)}}
+    <label>Nom de la sortie: <span>{{activity.name}}</span></label><br>
+    <label>Date et heure de la sortie: <span>{{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</span></label><br>
+    <label>Date limite d'inscription': <span>{{activity.dateLimitRegistration|date("d/m/Y")}}</span></label><br>
+    <label>Nombre de places: <span>{{activity.maxNbRegistrations}}</span></label><br>
+    <label>Durée: <span>{{activity.duration}}</span> minutes</label><br>
+    <label>Description et info: <span>{{activity.infosActivity}}</span></label><br>
+    <label>Campus: <span>{{activity.campus.name}}</span></label><br>
+    <label>Lieu: <span>{{activity.place.name}}</span></label><br>
+    <label>Rue: <span>{{activity.place.street}}</span></label><br>
+    <label>Latitude: <span>{{activity.place.latitude}}</span></label><br>
+    <label>Longitude: <span>{{activity.place.longitude}}</span></label><br>
+
+    <div>
+        <h4>Liste des participants inscrits :</h4>
+        <table>
+            <tr>
+                <th> Pseudo</th>
+                <th> Nom</th>
+            </tr>
+            {%for participant in activity.participants %}
+            <tr>
+                <td><a style="text-decoration:none" href="{{ path('participant_detail', {'user': participant.id}) }}">{{participant.username}}</a></td>
+               <td>{{participant.firstname}} <span style="text-transform: uppercase">{{participant.name}}</span></td>
+            </tr>
+            {%endfor%}
+
+        </table>
+    </div>
 {% endblock %}
