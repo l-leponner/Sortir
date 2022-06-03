@@ -27,6 +27,9 @@ class ParticipantController extends AbstractController
     public function editProfil(Request $request,EntityManagerInterface $manager,   UserPasswordHasherInterface $hasherPassword ): Response
     {
 
+        /**
+         * @var Participant $user
+         */
         $user = $this->getUser();
 
         $form = $this->createForm(ParticipantType::class, $user);
