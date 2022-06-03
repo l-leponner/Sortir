@@ -94,7 +94,7 @@
                         {%if app.user not in activity.participants%}<button><a href="{{path('join', {'activity':activity.id})}}">S'inscrire</a></button>{%endif%}
 
                         {#Action Modifier + Publier#}
-                        {%if activity.state.wording == 'Activity created'%}<button><a href="{{path('change_activity', {'activity':activity.id})}}">Modifier</a></button><button><a href="#">Publier : TODO</a></button>{%endif%}
+                        {%if activity.state.wording == 'Activity created'%}<button><a href="{{path('change_activity_edit', {'activity':activity.id})}}">Modifier</a></button><button><a href="#">Publier</a></button>{%endif%}
                     </td>
                 </tr>
             {%endfor%}

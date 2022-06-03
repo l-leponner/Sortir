@@ -6,4 +6,61 @@
 
     <h1>Modifier une sortie</h1>
 
+    {{form_start(changeActivityForm)}}
+
+    {{form_label(changeActivityForm.name)}}
+    {{form_widget(changeActivityForm.name)}}
+    {{form_errors(changeActivityForm.name)}}
+    <br>
+    {{form_label(changeActivityForm.dateTimeBeginning)}}
+    {{form_widget(changeActivityForm.dateTimeBeginning)}}
+    {{form_errors(changeActivityForm.dateTimeBeginning)}}
+    <br>
+    {{form_label(changeActivityForm.dateLimitRegistration)}}
+    {{form_widget(changeActivityForm.dateLimitRegistration)}}
+    {{form_errors(changeActivityForm.dateLimitRegistration)}}
+    <br>
+    {{form_label(changeActivityForm.maxNbRegistrations)}}
+    {{form_widget(changeActivityForm.maxNbRegistrations)}}
+    {{form_errors(changeActivityForm.maxNbRegistrations)}}
+    <br>
+    {{form_label(changeActivityForm.duration)}}
+    {{form_widget(changeActivityForm.duration)}}
+    {{form_errors(changeActivityForm.duration)}}
+    <br>
+    {{form_label(changeActivityForm.infosActivity)}}
+    {{form_widget(changeActivityForm.infosActivity)}}
+    {{form_errors(changeActivityForm.infosActivity)}}
+    <br>
+    {{form_label(changeActivityForm.campus)}}
+    {{form_widget(changeActivityForm.campus)}}
+    {{form_errors(changeActivityForm.campus)}}
+    <br>
+    {{form_label(changeActivityForm.place)}}
+    {{form_widget(changeActivityForm.place)}}
+    {{form_errors(changeActivityForm.place)}}
+    <button>+</button>
+    <br>
+
+    <label for="street">Rue : </label><span id="street">{{activity.place.street}}</span><br>
+    <label for="postCode">Code Postal : </label><span id="postCode">{{activity.place.city.postCode}}</span><br>
+    <label for="city">Ville : </label><span id="city">{{activity.place.city.name}}</span><br>
+    <label for="latitude">Latitude : </label><span id="latitude">{{activity.place.latitude}}</span><br>
+    <label for="longitude">Longitude : </label><span id="longitude">{{activity.place.longitude}}</span><br>
+    {{form_label(changeActivityForm.save)}}
+    {{form_widget(changeActivityForm.save)}}
+
+    <br>
+    {{form_label(changeActivityForm.saveAndPublish)}}
+    {{form_widget(changeActivityForm.saveAndPublish)}}
+
+    <br>
+{#    <button type="submit" name="submitButton" ><a href="{{path('change_activity_submit', {'activity':activity.id})}}">Enregistrer les changements</a></button>#}
+{#    <button type="submit" name="publishButton" ><a href="{{path('change_activity_publish', {'activity':activity.id})}}">Publier la sortie</a></button>#}
+    <button type="submit" name="deleteButton" ><a href="{{path('change_activity_delete', {'activity':activity.id})}}">Supprimer la sortie</a></button>
+    <button name="submitButton" ><a href="{{path('index')}}">Annuler</a></button>
+    {{form_end(changeActivityForm)}}
+
+
+
 {% endblock %}

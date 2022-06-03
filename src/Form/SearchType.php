@@ -51,7 +51,7 @@ class SearchType extends AbstractType
                 'label' => 'Campus : ',
                 'choice_label' => 'name',
                'class' => Campus::class,
-//                'placeholder' => '-- Select a campus --',
+
                 'required' => false,
                'data' => $this->security->getUser()->getCampus()
 //               'data' => 'participantCampus'
