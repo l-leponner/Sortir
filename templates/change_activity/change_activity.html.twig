@@ -39,7 +39,7 @@
     {{form_label(changeActivityForm.place)}}
     {{form_widget(changeActivityForm.place)}}
     {{form_errors(changeActivityForm.place)}}
-    <button>+</button>
+    <button><a href="{{path('place_creation')}}" title="Ajouter un lieu">+</a></button>
     <br>
 
     <label for="street">Rue : </label><span id="street">{{activity.place.street}}</span><br>

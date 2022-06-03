@@ -90,17 +90,17 @@ class ActivityRepository extends ServiceEntityRepository
                 ->setParameter('keyWord', '%'.$nameKeyword.'%');
         }
         if ($minDateTimeBeginning){
-            $minDateTimeBeginning->format('Y-m-d H:i:s');
+            $minDateTimeBeginning->format('Y-m-d 23:59:59');
 
             $queryBuilder
-                ->andWhere('a.dateTimeBeginning > :minDateTimeBeginning')
+                ->andWhere('a.dateTimeBeginning >= :minDateTimeBeginning')
                 ->setParameter('minDateTimeBeginning', $minDateTimeBeginning);
 
         }
         if ($maxDateTimeBeginning){
-            $maxDateTimeBeginning->format('Y-m-d H:i:s');
+            $maxDateTimeBeginning->format('Y-m-d 00:00:00');
             $queryBuilder
-                ->andWhere('a.dateTimeBeginning < :maxDateTimeBeginning')
+                ->andWhere('a.dateTimeBeginning =< :maxDateTimeBeginning')
                 ->setParameter('maxDateTimeBeginning', $maxDateTimeBeginning);
         }
 

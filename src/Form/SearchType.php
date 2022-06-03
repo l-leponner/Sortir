@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -35,16 +36,18 @@ class SearchType extends AbstractType
                 ]
 
             ])
-            ->add('minDateTimeBeginning', DateTimeType::class, [
+            ->add('minDateTimeBeginning', DateType::class, [
                 'label' => 'Entre',
                 'required' => false,
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
 
             ])
-            ->add('maxDateTimeBeginning', DateTimeType::class, [
+            ->add('maxDateTimeBeginning', DateType::class, [
                 'label' => 'et',
                 'required' => false,
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
             ])
 
             ->add('participantCampus', EntityType::class, [

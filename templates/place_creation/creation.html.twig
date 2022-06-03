@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir.com | Créer un lieu{% endblock %}
+
+{% block body %}
+    {{form_start(placeCreationForm)}}
+
+    {{form_label(placeCreationForm.name)}}
+    {{form_widget(placeCreationForm.name)}}
+    {{form_errors(placeCreationForm.name)}}
+    <br>
+    {{form_label(placeCreationForm.street)}}
+    {{form_widget(placeCreationForm.street)}}
+    {{form_errors(placeCreationForm.street)}}
+    <br>
+    {{form_label(placeCreationForm.latitude)}}
+    {{form_widget(placeCreationForm.latitude)}}
+    {{form_errors(placeCreationForm.latitude)}}
+    <br>
+    {{form_label(placeCreationForm.longitude)}}
+    {{form_widget(placeCreationForm.longitude)}}
+    {{form_errors(placeCreationForm.longitude)}}
+    <br>
+
+    {{form_label(placeCreationForm.city)}}
+    {{form_widget(placeCreationForm.city)}}
+    {{form_errors(placeCreationForm.city)}}
+    <br>
+    {{form_label(placeCreationForm.save)}}
+    {{form_widget(placeCreationForm.save)}}
+    {{form_end(placeCreationForm)}}
+{% endblock %}
