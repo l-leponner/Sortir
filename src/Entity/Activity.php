@@ -6,7 +6,9 @@ use App\Repository\ActivityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
+///** @Activity @EntityListeners({"DateListener"}) */
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
 {
@@ -16,20 +18,32 @@ class Activity
     private $id;
 
     #[ORM\Column(type: 'string', length: 100)]
+    #[Assert\Length(max: 100,
+        maxMessage: 'Le nom de peut dépasser 100 caractères.')]
+    #[Assert\NotBlank(message: 'Le nom ne peut pas être vide.')]
     private $name;
 
+
+    #[Assert\NotBlank(message: 'La date de début ne peut pas être vide.')]
+    #[Assert\GreaterThanOrEqual('today')]
     #[ORM\Column(type: 'datetime')]
     private $dateTimeBeginning;
 
+    #[Assert\NotBlank(message: 'La durée ne peut pas être vide.')]
     #[ORM\Column(type: 'integer')]
     private $duration;
 
+    #[Assert\NotBlank(message: 'La date de clôture ne peut pas être vide.')]
+    #[Assert\GreaterThanOrEqual('today')]
     #[ORM\Column(type: 'date')]
     private $dateLimitRegistration;
 
+    #[Assert\NotBlank(message: 'Le nombre de places ne peut pas être vide.')]
+    #[Assert\GreaterThanOrEqual(1, message: 'Il faut au moins un participant !')]
     #[ORM\Column(type: 'integer')]
     private $maxNbRegistrations;
 
+    #[Assert\NotBlank(message: 'La description ne peut pas être vide.')]
     #[ORM\Column(type: 'text')]
     private $infosActivity;
 

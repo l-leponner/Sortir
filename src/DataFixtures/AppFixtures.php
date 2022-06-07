@@ -242,7 +242,7 @@ class AppFixtures extends Fixture
         $participantRepo = $this->manager->getRepository(Participant::class);
         $participants = $participantRepo->findAll();
 
-        for ($j = 1; $j<30; $j++){
+        for ($j = 1; $j<50; $j++){
             $activity = new Activity();
             $activity->setName($this->faker->randomElement($activitiesNames))
                 ->setCampus($this->faker->randomElement($campuses))

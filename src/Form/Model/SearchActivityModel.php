@@ -4,6 +4,7 @@ namespace App\Form\Model;
 
 use App\Entity\Campus;
 
+use App\Entity\Participant;
 use Symfony\Component\Validator\Constraints as Assert;
 class SearchActivityModel
 {
@@ -24,6 +25,8 @@ class SearchActivityModel
     private bool $filterActiNotJoined = false;
 
     private bool $filterActiEnded = false;
+
+
 
     /**
      * @return Campus

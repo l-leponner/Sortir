@@ -62,5 +62,41 @@
     {{form_end(changeActivityForm)}}
 
 
+{#    {% block javascripts %}#}
+{#        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
+{#        <script>#}
+{#            $('#app_place_city').change(function () {#}
+{#                let citySelector = $(this);#}
+
+{#                // Request the neighborhoods of the selected city.#}
+{#                $.ajax({#}
+{#                    url: "{{ path('api_place') }}",#}
+{#                    type: "GET",#}
+{#                    dataType: "JSON",#}
+{#                    data: {#}
+{#                        cityid: citySelector.val()#}
+{#                    },#}
+{#                    success: function (cities) {#}
+{#                        let citySelect = $("#app_place_city");#}
+
+{#                        // Remove current options#}
+{#                        citySelect.html('');#}
+
+{#                        // Empty value ...#}
+{#                        citySelect.append('<option value> Select a neighborhood of ' + citySelector.find("option:selected").text() + ' ...</option>');#}
+
+
+{#                        $.each(cities, function (key, city) {#}
+{#                            citySelect.append('<option value="' + city.id + '">' + city.name + '</option>');#}
+{#                        });#}
+{#                    },#}
+{#                    error: function (err) {#}
+{#                        alert("An error ocurred while loading data ...");#}
+{#                    }#}
+{#                });#}
+{#            });#}
+{#        </script>#}
+{#    {% endblock %}#}
+
 
 {% endblock %}

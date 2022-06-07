@@ -6,6 +6,7 @@ use App\Repository\PlaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PlaceRepository::class)]
 class Place
@@ -14,16 +15,23 @@ class Place
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-
+    #[Assert\Length(max: 100,
+        maxMessage: 'Le nom de peut dépasser 100 caractères.')]
+    #[Assert\NotBlank(message: 'Le nom ne peut pas être vide.')]
     #[ORM\Column(type: 'string', length: 100)]
     private $name;
 
+    #[Assert\Length(max: 200,
+        maxMessage: 'La rue de peut dépasser 100 caractères.')]
+    #[Assert\NotBlank(message: 'La rue ne peut pas être vide.')]
     #[ORM\Column(type: 'string', length: 200)]
     private $street;
 
+    #[Assert\Type('float', message: 'La latitude doit être un nombre décimal.')]
     #[ORM\Column(type: 'float', nullable: true)]
     private $latitude;
 
+    #[Assert\Type('float', message: 'La longitude doit être un nombre décimal.')]
     #[ORM\Column(type: 'float', nullable: true)]
     private $longitude;
 
