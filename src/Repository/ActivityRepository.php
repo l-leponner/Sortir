@@ -136,7 +136,7 @@ class ActivityRepository extends ServiceEntityRepository
 
         $created = $stateRepository->findOneBy(['wording' => 'Activity created']);
         $queryBuilder
-            ->andWhere('a.organizer = :user AND a.state = :state OR a.organizer != :user AND a.state != :state')
+            ->andWhere('(a.organizer = :user ) OR (a.organizer != :user AND a.state != :state)')
             ->setParameter('state', $created)
             ->setParameter('user', $currentParticipant);
 

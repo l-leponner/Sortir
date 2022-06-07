@@ -35,43 +35,44 @@ class MainController extends AbstractController
         }
         $currentParticipant = $this->getUser();
 
-//        $stateOpened = $stateRepository->findOneBy(['wording' => 'Activity opened']);
-//        $stateClosed = $stateRepository->findOneBy(['wording' => 'Activity closed']);
-//        $stateEnded = $stateRepository->findOneBy(['wording' => 'Activity ended']);
-//        $stateInProg = $stateRepository->findOneBy(['wording' => 'Activity in progress']);
-//        $stateArch = $stateRepository->findOneBy(['wording' => 'Activity archived']);
-//        $activities = $activityRepository->findAll();
-//
-//
-//        foreach ($activities as $activity){
-//            if (count($activity->getParticipants()) < $activity->getMaxNbRegistrations() &&
-//                $activity->getDateLimitRegistration() > new \DateTime()){
-//            $activity->setState($stateOpened);
-////                $activity->getState()->setWording('Activity opened');
-//                $activityRepository->add($activity, true);
-//            } else {
-//                $activity->setState($stateClosed);
-//                $activityRepository->add($activity, true);
-//            }
-//            if($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute') < new \DateTime()){
-//                $activity->setState($stateEnded);
-//                $activityRepository->add($activity, true);
-//            } elseif ($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minutes') > new \DateTime()
-//                && $activity->getDateTimeBeginning() < new \DateTime()){
-//                $activity->setState($stateInProg);
-//                $activityRepository->add($activity, true);
-//            }
-//            if($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute')->modify('+1 month') < new \DateTime()){
-//                $activity->setState($stateArch);
-//                $activityRepository->add($activity, true);
-//            }
-//        }
 
         $searchActivityModel = new SearchActivityModel();
 
 
         $searchForm = $this->createForm(SearchType::class, $searchActivityModel);
         $searchForm->handleRequest($request);
+
+        if(!$searchForm->get('save')->isClicked()){
+            $stateOpened = $stateRepository->findOneBy(['wording' => 'Activity opened']);
+            $stateClosed = $stateRepository->findOneBy(['wording' => 'Activity closed']);
+            $stateEnded = $stateRepository->findOneBy(['wording' => 'Activity ended']);
+            $stateInProg = $stateRepository->findOneBy(['wording' => 'Activity in progress']);
+            $stateArch = $stateRepository->findOneBy(['wording' => 'Activity archived']);
+            $activities = $activityRepository->findAll();
+            foreach ($activities as $activity){
+                if (count($activity->getParticipants()) < $activity->getMaxNbRegistrations() &&
+                    $activity->getDateLimitRegistration() > new \DateTime()){
+                    $activity->setState($stateOpened);
+//                $activity->getState()->setWording('Activity opened');
+                    $activityRepository->add($activity, true);
+                } else {
+                    $activity->setState($stateClosed);
+                    $activityRepository->add($activity, true);
+                }
+                if($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute') < new \DateTime()){
+                    $activity->setState($stateEnded);
+                    $activityRepository->add($activity, true);
+                } elseif ($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minutes') > new \DateTime()
+                    && $activity->getDateTimeBeginning() < new \DateTime()){
+                    $activity->setState($stateInProg);
+                    $activityRepository->add($activity, true);
+                }
+                if($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute')->modify('+1 month') < new \DateTime()){
+                    $activity->setState($stateArch);
+                    $activityRepository->add($activity, true);
+                }
+            }
+        }
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()){
 
@@ -136,5 +137,17 @@ class MainController extends AbstractController
         return $this->redirectToRoute('index');
     }
 
+    #[Route('/publish/{activity}', name: 'publish')]
+    public function publish(Activity $activity,
+                            ActivityRepository $activityRepository,
+                            StateRepository $stateRepository): Response
+    {
+
+        $state = $stateRepository->findOneBy(['wording' => 'Activity opened']);
+        $activity->setState($state);
+        $activityRepository->add($activity, true);
+        $this->addFlash("success","Sortie publiée.");
+        return $this->redirectToRoute('index');
+    }
 
 }

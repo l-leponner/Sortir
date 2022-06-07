@@ -50,7 +50,9 @@
         {{form_widget(searchForm.filterActiEnded)}}
         {{form_errors(searchForm.filterActiEnded)}}
         <br>
-        <button type="submit" name="searchButton" >Rechercher</button>
+{#        <button type="submit" name="searchButton" >Rechercher</button>#}
+        {{form_label(searchForm.save)}}
+        {{form_widget(searchForm.save)}}
         {{form_end(searchForm)}}
     </section>
     <div class="flashMessages">
@@ -92,12 +94,14 @@
                         {#Action Afficher#}
                         {%if activity.state.wording != 'Activity created'%}<button><a href="{{path('displayActivity_display', {'activity':activity.id})}}">Afficher</a></button> {%endif%}
                         {#Action Se désister#}
-                        {%if app.user in activity.participants%}<button><a href="{{path('desist', {'activity':activity.id})}}">Se désister</a></button>{%endif%}
+                        {%if (app.user in activity.participants) and (app.user != activity.organizer)%}<button><a href="{{path('desist', {'activity':activity.id})}}">Se désister</a></button>{%endif%}
                         {#Action S'inscrire#}
                         {%if app.user not in activity.participants and activity.state.wording == 'Activity opened'%}<button><a href="{{path('join', {'activity':activity.id})}}">S'inscrire</a></button>{%endif%}
 
                         {#Action Modifier + Publier#}
-                        {%if activity.state.wording == 'Activity created'%}<button><a href="{{path('change_activity_edit', {'activity':activity.id})}}">Modifier</a></button><button><a href="#">Publier</a></button>{%endif%}
+                        {%if activity.state.wording == 'Activity created'%}<button><a href="{{path('change_activity_edit', {'activity':activity.id})}}">Modifier</a></button>
+                            <button><a href="{{path('publish', {'activity':activity.id})}}">Publier</a></button>{%endif%}
+                {%if activity.state.wording == 'Activity opened' and app.user == activity.organizer%}<button><a href="#">Annuler</a></button>{%endif%}
                     </td>
                 </tr>
 {#                        {%endif%}#}
@@ -107,5 +111,5 @@
 
 
     {%endif%}
-    <button><a href="{{path('app_activity')}}">Créer une sortie</a></button>
+    <button><a href="{{path('activity')}}">Créer une sortie</a></button>
 {% endblock %}
