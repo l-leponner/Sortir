@@ -41,6 +41,34 @@
     {{form_errors(addActivityForm.place)}}
 <button><a href="{{path('place_creation')}}" title="Ajouter un lieu">+</a></button>
 <br>
+    <input type="hidden" id="hiddenPath" data-url={{path('api_place')}}>
+    <div id="infos_place"></div>
+    {%block script%}
+        <script>
+            document.getElementById('activity_place').addEventListener("change", function (){
+                let path = document.getElementById('hiddenPath').dataset.url
+                let id = document.getElementById('activity_place').value
+                fetch(path, {method: 'POST', body:JSON.stringify({'id':id})})
+                    .then(function (response){
+                        return response.json()
+                    }).then(function (data){
+                    let result = document.getElementById('infos_place')
+
+                    result.innerHTML = ""
+                    result.innerHTML = '<div><label for="street">Rue : </label><span id="street">' + data.street + '</span><br>' +
+                        '<label for="postCode">Code Postal : </label><span id="postCode">' + data.postCode +'</span><br>'+
+                        '<label for="city">Ville : </label><span id="city">'+data.city+'</span><br>'+
+                        '<label for="latitude">Latitude : </label><span id="latitude">'+data.latitude+'</span><br>'+
+                        '<label for="longitude">Longitude : </label><span id="longitude">'+data.longitude+'</span><br></div>'
+
+                    document.getElementById('infos_place').appendChild(result)
+                })
+            })
+            const e = new Event("change");
+            const element = document.querySelector('#activity_place');
+            element.dispatchEvent(e);
+        </script>
+    {%endblock%}
 
 {#<label for="street">Rue : </label><span id="street">{{activity.place.street}}</span><br>#}
 {#<label for="postCode">Code Postal : </label><span id="postCode">{{activity.place.city.postCode}}</span><br>#}

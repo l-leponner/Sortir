@@ -26,7 +26,8 @@ class ActivityType extends AbstractType
             ])
             ->add('dateTimeBeginning', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie : ',
-                'widget' => 'single_text'
+                'date_widget' => 'single_text',
+                'time_widget' => 'single_text',
             ])
             ->add('duration', NumberType::class, [
                 'label' => 'Durée : '
@@ -51,14 +52,14 @@ class ActivityType extends AbstractType
                 'label' => 'Campus : ',
                 'choice_label' => 'name',
                 'class' => Campus::class,
-//                'data' => 'campus'
+
             ])
 
             ->add('place', EntityType::class, [
                 'label' => 'Lieu : ',
                 'choice_label' => 'name',
                 'class' => Place::class,
-//                'data' => 'place'
+
             ])
 //            ->add('state')
             ->add('save', SubmitType::class, [
@@ -72,8 +73,8 @@ class ActivityType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-      /*  $resolver->setDefaults([
+        $resolver->setDefaults([
             'data_class' => Activity::class,
-        ]);*/
+        ]);
     }
 }

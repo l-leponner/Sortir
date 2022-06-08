@@ -262,10 +262,10 @@ class AppFixtures extends Fixture
             $activity = new Activity();
             $activity->setName($this->faker->randomElement($activitiesNames))
                 ->setCampus($this->faker->randomElement($campuses))
-                ->setDateTimeBeginning($this->faker->dateTimeBetween('-6 month', 'now'))
+                ->setDateTimeBeginning($this->faker->dateTimeBetween('-2 month', 'now'))
                 ->setDuration($this->faker->numberBetween(10, 240))
                 ->setInfosActivity(join($this->faker->words(5)))
-                ->setDateLimitRegistration($this->faker->dateTimeBetween('-5 month', '-2 weeks'))
+                ->setDateLimitRegistration($this->faker->dateTimeBetween('-2 month', '-2 weeks'))
                 ->setMaxNbRegistrations($this->faker->numberBetween(3, 12))
                 ->setState($this->faker->randomElement($states))
                 ->setPlace($this->faker->randomElement($places))

@@ -48,7 +48,8 @@ class ChangeActivityType extends AbstractType
             ])
             ->add('dateTimeBeginning', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie : ',
-                'widget' => 'single_text'
+                'date_widget' => 'single_text',
+                'time_widget' => 'text',
             ])
             ->add('duration', NumberType::class, [
                 'label' => 'Durée : '
@@ -80,7 +81,9 @@ class ChangeActivityType extends AbstractType
                 'label' => 'Lieu : ',
                 'choice_label' => 'name',
                 'class' => Place::class,
-//                'data' => 'place'
+//                'attr' => [
+//                    'id' => 'activity_place'
+//                ]
             ])
 //            ->add('state')
             ->add('save', SubmitType::class, [

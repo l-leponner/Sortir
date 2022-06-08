@@ -43,34 +43,63 @@ class MainController extends AbstractController
         $searchForm->handleRequest($request);
 
         if(!$searchForm->get('save')->isClicked()){
-            $stateOpened = $stateRepository->findOneBy(['wording' => 'Activity opened']);
-            $stateClosed = $stateRepository->findOneBy(['wording' => 'Activity closed']);
-            $stateEnded = $stateRepository->findOneBy(['wording' => 'Activity ended']);
-            $stateInProg = $stateRepository->findOneBy(['wording' => 'Activity in progress']);
-            $stateArch = $stateRepository->findOneBy(['wording' => 'Activity archived']);
-            $activities = $activityRepository->findAll();
+//            $stateOpened = $stateRepository->findOneBy(['wording' => 'Activity opened']);
+//            $stateClosed = $stateRepository->findOneBy(['wording' => 'Activity closed']);
+//            $stateEnded = $stateRepository->findOneBy(['wording' => 'Activity ended']);
+//            $stateInProg = $stateRepository->findOneBy(['wording' => 'Activity in progress']);
+//            $stateArch = $stateRepository->findOneBy(['wording' => 'Activity archived']);
+            $stateOpened = null;
+            $stateClosed = null;
+            $stateEnded = null;
+            $stateInProg = null;
+            $stateArch = null;
+            $states =$stateRepository->findAll(); //foreach
+            foreach ($states as $state){
+                if ($state->getWording() == 'Activity opened'){
+                    $stateOpened = $state;
+                }
+                if ($state->getWording() == 'Activity ended'){
+                    $stateEnded = $state;
+                }
+                if ($state->getWording() == 'Activity in progress'){
+                    $stateInProg = $state;
+                }
+                if ($state->getWording() == 'Activity closed'){
+                    $stateClosed = $state;
+                }
+                if ($state->getWording() == 'Activity archived'){
+                    $stateArch = $state;
+                }
+
+
+            }
+            $activities = $activityRepository->findActivitiesAndStates();
+
+
             foreach ($activities as $activity){
+                $dateEndActivity = $activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute');
+                $dateArchive = $activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute')->modify('+1 month');
                 if (count($activity->getParticipants()) < $activity->getMaxNbRegistrations() &&
                     $activity->getDateLimitRegistration() > new \DateTime()){
                     $activity->setState($stateOpened);
-//                $activity->getState()->setWording('Activity opened');
-                    $activityRepository->add($activity, true);
+
                 } else {
                     $activity->setState($stateClosed);
-                    $activityRepository->add($activity, true);
+
                 }
-                if($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute') < new \DateTime()){
+                if($dateEndActivity < new \DateTime()){
                     $activity->setState($stateEnded);
-                    $activityRepository->add($activity, true);
-                } elseif ($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minutes') > new \DateTime()
+
+                } elseif ($dateEndActivity > new \DateTime()
                     && $activity->getDateTimeBeginning() < new \DateTime()){
                     $activity->setState($stateInProg);
-                    $activityRepository->add($activity, true);
+
                 }
-                if($activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute')->modify('+1 month') < new \DateTime()){
+                if($dateArchive < new \DateTime()){
                     $activity->setState($stateArch);
-                    $activityRepository->add($activity, true);
+
                 }
+                $activityRepository->add($activity, true);
             }
         }
 
