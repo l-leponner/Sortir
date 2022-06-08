@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -75,6 +76,12 @@ class SearchType extends AbstractType
             ->add('filterActiEnded', CheckboxType::class, [
                 'label' => 'Sorties passées',
                 'required' => false
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'Rechercher',
+                'attr' => [
+                    'name' => 'searchButton'
+                ]
             ])
         ;
     }

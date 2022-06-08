@@ -1,19 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sortir.com | Création de sortie{% endblock %}
+{% block title %}Sortir.com | Modification de sortie{% endblock %}
 
 {% block body %}
 
-    <h1>Créer une sortie</h1>
+<h1>Créer une sortie</h1>
 
-    <form method="post">
-        {{ form_rest(form) }}
-        <button type="submit"><a href="{{path('index')}}">Enregistrer</a></button>
-        <button type="submit"><a href="{{path('index')}}">Publier la sortie</a></button>
-        <button type="submit"><a href="{{path('index')}}">Annuler</a></button>
-        {{ form_end(form) }}
-    </form>
-{% endblock %}
+{{form_start(addActivityForm)}}
 
+    {{form_label(addActivityForm.name)}}
+    {{form_widget(addActivityForm.name)}}
+    {{form_errors(addActivityForm.name)}}
+<br>
+{{form_label(addActivityForm.dateTimeBeginning)}}
+    {{form_widget(addActivityForm.dateTimeBeginning)}}
+    {{form_errors(addActivityForm.dateTimeBeginning)}}
+<br>
+{{form_label(addActivityForm.dateLimitRegistration)}}
+    {{form_widget(addActivityForm.dateLimitRegistration)}}
+    {{form_errors(addActivityForm.dateLimitRegistration)}}
+<br>
+{{form_label(addActivityForm.maxNbRegistrations)}}
+    {{form_widget(addActivityForm.maxNbRegistrations)}}
+    {{form_errors(addActivityForm.maxNbRegistrations)}}
+<br>
+{{form_label(addActivityForm.duration)}}
+    {{form_widget(addActivityForm.duration)}}
+    {{form_errors(addActivityForm.duration)}}
+<br>
+{{form_label(addActivityForm.infosActivity)}}
+    {{form_widget(addActivityForm.infosActivity)}}
+    {{form_errors(addActivityForm.infosActivity)}}
+<br>
+{{form_label(addActivityForm.campus)}}
+    {{form_widget(addActivityForm.campus)}}
+    {{form_errors(addActivityForm.campus)}}
+<br>
+{{form_label(addActivityForm.place)}}
+    {{form_widget(addActivityForm.place)}}
+    {{form_errors(addActivityForm.place)}}
+<button><a href="{{path('place_creation')}}" title="Ajouter un lieu">+</a></button>
+<br>
 
-{#<button type="button"> <a href="{{path('app_page3')}}">BOUTON QUI MENE VERS LA PAGE 3</a> </button>#}
+{#<label for="street">Rue : </label><span id="street">{{activity.place.street}}</span><br>#}
+{#<label for="postCode">Code Postal : </label><span id="postCode">{{activity.place.city.postCode}}</span><br>#}
+{#<label for="city">Ville : </label><span id="city">{{activity.place.city.name}}</span><br>#}
+{#<label for="latitude">Latitude : </label><span id="latitude">{{activity.place.latitude}}</span><br>#}
+{#<label for="longitude">Longitude : </label><span id="longitude">{{activity.place.longitude}}</span><br>#}
+{{form_label(addActivityForm.save)}}
+    {{form_widget(addActivityForm.save)}}
+
+<br>
+{{form_label(addActivityForm.saveAndPublish)}}
+    {{form_widget(addActivityForm.saveAndPublish)}}
+
+<br>
+{#    <button type="submit" name="submitButton" ><a href="{{path('change_activity_submit', {'activity':activity.id})}}">Enregistrer les changements</a></button>#}
+{#    <button type="submit" name="publishButton" ><a href="{{path('change_activity_publish', {'activity':activity.id})}}">Publier la sortie</a></button>#}
+{#<button type="submit" name="deleteButton" ><a href="{{path('change_activity_delete', {'activity':activity.id})}}">Supprimer la sortie</a></button>#}
+<button name="submitButton" ><a href="{{path('index')}}">Annuler</a></button>
+{{form_end(addActivityForm)}}
+
+{%endblock%}

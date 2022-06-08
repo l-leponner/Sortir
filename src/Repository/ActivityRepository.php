@@ -79,6 +79,7 @@ class ActivityRepository extends ServiceEntityRepository
 
         $queryBuilder = $this->createQueryBuilder('a');
 
+
         if ($participantCampus){
             $queryBuilder
                 ->andWhere('a.campus = :campus')
@@ -93,14 +94,14 @@ class ActivityRepository extends ServiceEntityRepository
             $minDateTimeBeginning->format('Y-m-d 23:59:59');
 
             $queryBuilder
-                ->andWhere('a.dateTimeBeginning >= :minDateTimeBeginning')
+                ->andWhere('a.dateTimeBeginning > :minDateTimeBeginning')
                 ->setParameter('minDateTimeBeginning', $minDateTimeBeginning);
 
         }
         if ($maxDateTimeBeginning){
             $maxDateTimeBeginning->format('Y-m-d 00:00:00');
             $queryBuilder
-                ->andWhere('a.dateTimeBeginning =< :maxDateTimeBeginning')
+                ->andWhere('a.dateTimeBeginning < :maxDateTimeBeginning')
                 ->setParameter('maxDateTimeBeginning', $maxDateTimeBeginning);
         }
 
@@ -125,7 +126,7 @@ class ActivityRepository extends ServiceEntityRepository
         }
 
         if ($filterActiEnded){
-            $state = $stateRepository->findOneBy(['wording' => 'Activity opened']);
+            $state = $stateRepository->findOneBy(['wording' => 'Activity ended']);
             $queryBuilder
                 ->andWhere('a.state = :state')
                 ->setParameter('state', $state)
@@ -133,6 +134,11 @@ class ActivityRepository extends ServiceEntityRepository
             ;
         }
 
+        $created = $stateRepository->findOneBy(['wording' => 'Activity created']);
+        $queryBuilder
+            ->andWhere('(a.organizer = :user ) OR (a.organizer != :user AND a.state != :state)')
+            ->setParameter('state', $created)
+            ->setParameter('user', $currentParticipant);
 
         $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
 //            ->setMaxResults(10) <= si je veux avoir un maximum de résultats
