@@ -1,42 +1,69 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Modifier mon profil{% endblock %}
+{%block stylesheets%}
+    {{parent()}}
 
+{%endblock%}
 {% block body %}
 
     {%if app.user%}
 
+        <div class="coco">
 
-        <h2 class="text-center mt-4">Modifier mon profil</h2>
-
+             <h2>Modifier mon profil</h2>
+        </div>
+            <br>
+{#        <img src={{editProfilForm.brochure.}}>#}
             {{ form_start(editProfilForm) }}
+
+
             {{ form_errors(editProfilForm) }}
-            {{ form_row(editProfilForm)}}
+            <div class="coco " >
+               {{ form_label(editProfilForm.username)}}
+                {{ form_widget(editProfilForm.username)}}
+            </div>
+            <div class="coco">
+            {{ form_row(editProfilForm.firstname)}}
+            </div>
+            <div class="coco">
+            {{ form_row(editProfilForm.name)}}
+            </div>
+            <div class="coco">
+            {{ form_row(editProfilForm.phone)}}
+            </div>
+            <div class="coco">
+             {{ form_row(editProfilForm.email)}}
+            </div>
+            <div class="coco">
+            {{ form_row(editProfilForm.password)}}
+            </div>
+            <div class="coco">
+            </div>
+            <div class="coco">
+            {{ form_row(editProfilForm.campus)}}
+            </div>
+            <div class="coco">
+            {{ form_row(editProfilForm.brochure)}}
+            </div>
+            <div class="coco">
+            {{ form_row(editProfilForm.save)}}
+            </div>
+
             {{ form_end(editProfilForm) }}
-        <a href="{{path('index')}}" class="sidenav-link active" type="submit"><button>Annuler</button></a>
+            <div  class="coco" >
+            <a href="{{path('index')}}" type="submit"><button>Annuler</button></a>
+            </div>
 
 
-{##}
-{#            <h2>Mon profil</h2>#}
-{#        <label > Pseudo : <input type="text" value="{{app.user.userIdentifier}}"> </label>#}
-{#        <br><br>#}
-{#        <label > Prénom : <input type="text" value="{{app.user.firstname}}"></label>#}
-{#        <br><br>#}
-{#        <label > Nom : <input type="text" value="{{app.user.name}}"></label>#}
-{#        <br><br>#}
-{#        <label > Téléphone : <input type="text" value="{{app.user.phone}}"></label>#}
-{#        <br><br>#}
-{#        <label > Mot de passe : <input type="password" value=""></label>#}
-{#        <br><br>#}
-{#        <label > Confirmation : <input type="password" value=""></label>#}
-{#        <br><br>#}
-{#        <label > Campus : <input type="range" value="{{app.user.campus}}"></label>#}
-{#        <br><br>#}
-{#        <label > Ma photo : <input type="file" accept="image/jpegn, image/png" name="Télécherger vers le serveur" ></label>#}
-{#        <button value="">Enregitrer</button>#}
-{#        <button>Annuler</button>#}
+        {%else %}
+            <h2 class="para">La consultation de profil nécessite une connexion à votre compte</h2>
 
-
+            <p class="para">Cliquez sur "x" pour fermer le message</p>
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';"><a href="{{ path('app_login') }}">&times;</a></span>
+                <strong>Interdit ! </strong>Accès non autorisé.
+            </div>
     {%endif%}
 
 {% endblock %}

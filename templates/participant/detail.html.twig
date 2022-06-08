@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Profil de {{ user.username}}{% endblock %}
-
+{%block stylesheets%}
+    <link rel="stylesheet" href="{{ asset('base.css') }}">
+{%endblock%}
 {% block body %}
+
     {%if app.user%}
+        <img src="{{ asset('uploads/brochures/' ~ user.brochureFilename())}}" alt="Image de profil" style="width: 75px; height: 75px; border-radius: 50%">
+        <br>
         <h3>{{user.username()}}</h3>
+        <br>
         <label for="{{user.firstname()}}">Prénom : </label><span id="user-firstname">{{user.firstname}}</span>
         <br>
         <label for="{{user.name()}}">Nom : </label><span id="user-name">{{user.name}}</span>

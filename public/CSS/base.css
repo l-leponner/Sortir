@@ -1,0 +1,146 @@
+
+/*base.html.twig*/
+
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    background : linear-gradient(darkslateblue, #10001d);
+    height: 100vh;
+    font-family: system-ui;
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px;
+    color: honeydew
+}
+header.logo{
+    font-size: 30px;
+    text-transform: uppercase;
+}
+header ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+header ul li {
+    margin-right: 30px;
+}
+header ul li a{
+    padding: 6px 15px;
+    border-radius: 20px;
+}
+header ul li a:hover{
+    background: #fff;
+    color:darkslateblue;
+}
+        /*login.html.twig*/
+        /*  1-L'identifiant  */
+.form {
+
+    position: relative;
+    width: 20rem;
+    height: 3rem;
+}
+.form input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #e1e5ee;
+    border-radius: 0.5rem;
+    font-family: inherit;
+    font-size: inherit;
+    color: white;
+    outline: none;
+    padding: 1.25rem;
+    background: none;
+}
+.form input:hover {
+    border-color: #adffff;
+}
+
+.form input:focus {
+    border-color:black;
+}
+
+
+.form label {
+     position: absolute;
+     left: 1rem;
+     top: 0.8rem;
+     padding: 0 0.5rem;
+     color: white;
+     cursor: text;
+     transition: top 200ms ease-in, left 200ms ease-in, font-size 200ms ease-in;
+     background-color: darkslateblue;
+    border-radius:50px;
+ }
+
+.form-control:focus ~ .form__label,
+.form-control:not(:placeholder-shown).form-control:not(:focus) ~ .form__label {
+    top: -0.5rem;
+    font-size: 0.8rem;
+    left: 0.8rem;
+}
+
+.checkbox{
+    color: #dfdfdf;
+}
+/*2- positions d'éléments de la page*/
+
+form{
+    text-align: center;
+}
+.form, .form1{
+    margin-top: 10px;
+    display: inline-block;
+}
+
+
+
+
+
+/* profile.html.twig*/
+
+    /* Consultation de profil sans connexion*/
+.alert {
+    padding: 20px;
+    background-color: blueviolet;
+    color: white;
+    text-align: center;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+
+.para {
+    color: #dfdfdf;
+    text-align: center;
+}
+        /*positionnement des éléments*/
+.coco{
+    text-align: center;
+    padding-top: 30px;
+}

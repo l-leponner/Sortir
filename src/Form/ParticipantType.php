@@ -16,7 +16,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Regex;
-
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 class ParticipantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -24,6 +25,9 @@ class ParticipantType extends AbstractType
         $builder
             ->add('username', TextType::class,[
                 'label' =>"Pseudo :",
+                'attr' => [
+                    'class' => 'classlabel'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Merci de renseigner un pseudo.',
@@ -38,6 +42,9 @@ class ParticipantType extends AbstractType
             ])
             ->add('firstname', TextType::class,[
                 'label' =>"Prénom : ",
+                'attr' => [
+                    'class' => 'classlabel'
+                ],
                 'constraints' => [
 //                    new NotBlank([
 //                        'message' => 'Merci de renseigner un prénom.',
@@ -52,6 +59,9 @@ class ParticipantType extends AbstractType
             ])
             ->add('name', TextType::class,[
                 'label' =>"Nom : ",
+                'attr' => [
+                  'class' => 'classlabel'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Merci de renseigner un nom.',
@@ -66,6 +76,9 @@ class ParticipantType extends AbstractType
             ])
             ->add('phone', TextType::class,[
                 'label' =>"Téléphone : ",
+                'attr' => [
+                    'class' => 'classlabel'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Merci de renseigner un numéro de téléphone.',
@@ -94,6 +107,9 @@ class ParticipantType extends AbstractType
             ->add('password', RepeatedType::class,[
                 'type' => PasswordType::class,
                 'invalid_message' => 'Le mot de passe ne correspond pas à sa confirmation.',
+                'attr' => [
+                    'class' => 'classlabel'
+                ],
                 'first_options' => [
                     'label' => 'Mot de passe : ',
 //                   'help' => 'Le mot de passe doit contenir au minimum 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial.',
@@ -121,25 +137,51 @@ class ParticipantType extends AbstractType
             ])
 
             ->add('campus', EntityType::class,[
-                'label' =>"Campus : ",
+                'label' =>"Campus  ",
+                'attr' => [
+                    'class' => 'classlabel'
+                ],
                 'choice_label' =>"name",
                 'class' => 'App\Entity\Campus'
             ])
-            ->add('save', SubmitType::class, [
-            'label' => 'Enregistrer',
-            'attr' => [
-                'class' => 'btn mt-3 cardButton col-12',
-                'id' => 'loginBtn'
-            ]
-           ]);
-//            ->add('cancel', SubmitType::class, [
-//                'label' => 'Annuler',
-//                'attr' => [
-//                    'class' => 'cancelBtn',
-//                    'id' => 'cancelBtn'
-//                ]
-//            ]);
 
+
+            ################### image ######################
+            ->add('brochure', FileType::class, [
+                'label' => 'Ma photo : ',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1044k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/jpg'
+                        ],
+                        'mimeTypesMessage' => "Veuillez ajouter un type d'image valide",
+                    ])
+                ],
+            ])
+            // ...
+
+
+            #####################################################
+        ->add('save', SubmitType::class, [
+        'label' => 'Enregistrer',
+        'attr' => [
+            'class' => ' class="btn btn-dark"',
+            'id' => 'loginBtn'
+        ]
+    ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
