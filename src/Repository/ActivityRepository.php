@@ -77,9 +77,14 @@ class ActivityRepository extends ServiceEntityRepository
 
         $filterActiEnded = $searchActivityModel->isFilterActiEnded();
 
+
         $queryBuilder = $this->createQueryBuilder('a');
-
-
+        $queryBuilder->join('a.state', 's');
+        $queryBuilder->join('a.participants', 'p');
+        $queryBuilder->join('a.organizer', 'o');
+        $queryBuilder->join('a.place', 'pl');
+        $queryBuilder->join('a.campus', 'c');
+        $queryBuilder->addSelect('s', 'p', 'o', 'pl', 'c');
         if ($participantCampus){
             $queryBuilder
                 ->andWhere('a.campus = :campus')
@@ -145,6 +150,31 @@ class ActivityRepository extends ServiceEntityRepository
         $query = $queryBuilder->getQuery();
 
             return $query->getResult();
+    }
+
+    public function findActivitiesAndStates()
+    {
+
+//        $fields = [
+//            'a.name',
+//            'a.dateTimeBeginning',
+//            'a.duration',
+//            'a.dateLimitRegistration',
+//            'a.maxNbRegistrations',
+//            'a.state',
+//            's.wording'];
+        $fields = 'partial a.{id, name, dateTimeBeginning, duration, dateLimitRegistration, maxNbRegistrations, maxNbRegistrations, state, participants}, 
+        partial s.{id, wording}, partial p.{id}';
+
+        $queryBuilder = $this->createQueryBuilder('a');
+        $queryBuilder
+            ->select('s', 'p', 'a')
+
+            ->join('a.state', 's')
+            ->join('a.participants', 'p');
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
     }
 
 //    /**
