@@ -68,6 +68,7 @@
     {%if searchButton != false%}
 
         <table>
+            <thead>
             <tr>
                 <th>Nom de la sortie</th>
                 <th>Date de la sortie</th>
@@ -78,11 +79,15 @@
                 <th>Organisateur</th>
                 <th>Actions</th>
             </tr>
+            </thead>
+            <tbody>
 
             {%for activity in lstActivities%}
                 {%if activity.state.wording != 'Activity archived'%}
 {#                    {%if app.user != activity.organizer and activity.state.wording != 'Activity created'%}#}
-                <tr>
+
+
+                    <tr>
                     <td>{{activity.name}}</td>
                     <td>{{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</td>
                     <td>{{activity.dateLimitRegistration|date("d/m/Y")}}</td>
@@ -101,14 +106,17 @@
                         {#Action Modifier + Publier#}
                         {%if activity.state.wording == 'Activity created'%}<button><a href="{{path('change_activity_edit', {'activity':activity.id})}}">Modifier</a></button>
                             <button><a href="{{path('publish', {'activity':activity.id})}}">Publier</a></button>{%endif%}
-                {%if activity.state.wording == 'Activity opened' and app.user == activity.organizer%}<button><a href="#">Annuler</a></button>{%endif%}
+                {%if activity.state.wording == 'Activity opened' and app.user == activity.organizer%}<button><a href="{{path('cancel', {'activity':activity.id})}}">Annuler</a></button>{%endif%}
                     </td>
                 </tr>
 {#                        {%endif%}#}
                 {%endif%}
             {%endfor%}
+            </tbody>
         </table>
-
+        {%if lstActivities == null%}
+            <p id="messageLstEmpty">Pas de sorties associées à la recherche.</p>
+        {%endif%}
 
     {%endif%}
     <button><a href="{{path('activity')}}">Créer une sortie</a></button>

@@ -155,17 +155,6 @@ class ActivityRepository extends ServiceEntityRepository
     public function findActivitiesAndStates()
     {
 
-//        $fields = [
-//            'a.name',
-//            'a.dateTimeBeginning',
-//            'a.duration',
-//            'a.dateLimitRegistration',
-//            'a.maxNbRegistrations',
-//            'a.state',
-//            's.wording'];
-        $fields = 'partial a.{id, name, dateTimeBeginning, duration, dateLimitRegistration, maxNbRegistrations, maxNbRegistrations, state, participants}, 
-        partial s.{id, wording}, partial p.{id}';
-
         $queryBuilder = $this->createQueryBuilder('a');
         $queryBuilder
             ->select('s', 'p', 'a')

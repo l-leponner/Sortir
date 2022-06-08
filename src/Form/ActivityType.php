@@ -33,7 +33,7 @@ class ActivityType extends AbstractType
                 'label' => 'Durée : '
             ])
             ->add('dateLimitRegistration', DateType::class, [
-                'label' => 'Date limite de la sortie : ',
+                'label' => 'Date limite d\'inscription : ',
                 'widget' => 'single_text'
             ])
             ->add('maxNbRegistrations', NumberType::class, [

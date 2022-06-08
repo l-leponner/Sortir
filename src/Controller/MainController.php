@@ -10,6 +10,7 @@ use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\StateRepository;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ class MainController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(Request $request,
                           ActivityRepository $activityRepository,
-                          StateRepository $stateRepository
+                          StateRepository $stateRepository, EntityManagerInterface $entityManager
                           ): Response
     {
 
@@ -48,13 +49,17 @@ class MainController extends AbstractController
 //            $stateEnded = $stateRepository->findOneBy(['wording' => 'Activity ended']);
 //            $stateInProg = $stateRepository->findOneBy(['wording' => 'Activity in progress']);
 //            $stateArch = $stateRepository->findOneBy(['wording' => 'Activity archived']);
+            $stateCreated = null;
             $stateOpened = null;
             $stateClosed = null;
             $stateEnded = null;
             $stateInProg = null;
             $stateArch = null;
-            $states =$stateRepository->findAll(); //foreach
+            $states =$stateRepository->findAll();
             foreach ($states as $state){
+                if ($state->getWording() == 'Activity created'){
+                    $stateCreated = $state;
+                }
                 if ($state->getWording() == 'Activity opened'){
                     $stateOpened = $state;
                 }
@@ -70,6 +75,9 @@ class MainController extends AbstractController
                 if ($state->getWording() == 'Activity archived'){
                     $stateArch = $state;
                 }
+                if ($state->getWording() == 'Activity cancelled'){
+                    $stateCancelled = $state;
+                }
 
 
             }
@@ -77,40 +85,49 @@ class MainController extends AbstractController
 
 
             foreach ($activities as $activity){
-                $dateEndActivity = $activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute');
-                $dateArchive = $activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute')->modify('+1 month');
-                if (count($activity->getParticipants()) < $activity->getMaxNbRegistrations() &&
-                    $activity->getDateLimitRegistration() > new \DateTime()){
+
+                $dateBeginning = clone $activity->getDateTimeBeginning();
+                $duration = $activity->getDuration();
+                $dateEndActivity = $dateBeginning->modify($duration . 'minute');
+                $dateArchive = $dateEndActivity->modify('+1 month');
+                $dateNow = new \DateTime();
+
+                if ($activity->getState()->getWording() == $stateClosed &&
+                    (count($activity->getParticipants()) < $activity->getMaxNbRegistrations() ||
+                    $activity->getDateLimitRegistration() > $dateNow) ){
                     $activity->setState($stateOpened);
 
-                } else {
+                }
+                elseif ($activity->getState()->getWording() == $stateOpened &&
+                    (count($activity->getParticipants()) == $activity->getMaxNbRegistrations() ||
+                    $activity->getDateLimitRegistration() < $dateNow) ){
                     $activity->setState($stateClosed);
 
                 }
-                if($dateEndActivity < new \DateTime()){
-                    $activity->setState($stateEnded);
 
-                } elseif ($dateEndActivity > new \DateTime()
-                    && $activity->getDateTimeBeginning() < new \DateTime()){
+                elseif ($activity->getState()->getWording() == $stateClosed
+                    && $dateNow < $dateEndActivity
+                    && $dateBeginning < $dateNow){
                     $activity->setState($stateInProg);
-
                 }
-                if($dateArchive < new \DateTime()){
+                elseif ($dateEndActivity < $dateNow && $activity->getState()->getWording() == $stateInProg){
+                    $activity->setState($stateEnded);
+                }
+
+                elseif($dateArchive < $dateNow && ($activity->getState()->getWording() == $stateEnded || $activity->getState()->getWording() == $stateCancelled)){
                     $activity->setState($stateArch);
 
                 }
-                $activityRepository->add($activity, true);
+                $activityRepository->add($activity, false);
             }
+            $entityManager->flush();
+
         }
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()){
 
-
-
             $lstActivities = $activityRepository->findByFilters($searchActivityModel, $currentParticipant, $stateRepository);
-            if (!$lstActivities){
-                $this->addFlash("error", "Pas de sorties associées à la recherche.");
-            }
+
 
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',

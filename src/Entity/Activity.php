@@ -35,6 +35,7 @@ class Activity
 
     #[Assert\NotBlank(message: 'La date de clôture ne peut pas être vide.')]
     #[Assert\GreaterThanOrEqual('today')]
+    #[Assert\LessThanOrEqual(propertyPath: 'dateTimeBeginning', message: 'La date de clôture doit être antérieure à la date de début.')]
     #[ORM\Column(type: 'date')]
     private $dateLimitRegistration;
 
