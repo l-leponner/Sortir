@@ -16,7 +16,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Regex;
-
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 class ParticipantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -121,25 +122,48 @@ class ParticipantType extends AbstractType
             ])
 
             ->add('campus', EntityType::class,[
-                'label' =>"Campus : ",
+                'label' =>"Campus  ",
                 'choice_label' =>"name",
                 'class' => 'App\Entity\Campus'
             ])
-            ->add('save', SubmitType::class, [
-            'label' => 'Enregistrer',
-            'attr' => [
-                'class' => 'btn mt-3 cardButton col-12',
-                'id' => 'loginBtn'
-            ]
-           ]);
-//            ->add('cancel', SubmitType::class, [
-//                'label' => 'Annuler',
-//                'attr' => [
-//                    'class' => 'cancelBtn',
-//                    'id' => 'cancelBtn'
-//                ]
-//            ]);
 
+
+            ################### image ######################
+            ->add('brochure', FileType::class, [
+                'label' => 'Ma photo : ',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1044k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/jpg'
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                    ])
+                ],
+            ])
+            // ...
+
+
+            #####################################################
+        ->add('save', SubmitType::class, [
+        'label' => 'Enregistrer',
+        'attr' => [
+            'class' => 'btn mt-3 cardButton col-12',
+            'id' => 'loginBtn'
+        ]
+    ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

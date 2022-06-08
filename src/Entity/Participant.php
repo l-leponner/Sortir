@@ -51,6 +51,9 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 100, unique: true)]
     private $username;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $brochureFilename;
+
     public function __construct()
     {
         $this->joinedActivities = new ArrayCollection();
@@ -267,4 +270,31 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+//    public function getImage(): ?string
+//    {
+//        return $this->image;
+//    }
+//
+//    public function setImage(?string $image): self
+//    {
+//        $this->image = $image;
+//
+//        return $this;
+//    }
+//    /**
+//     * @ORM\Column(type="string")
+//     */
+//    private $brochureFilename;
+
+    public function getBrochureFilename()
+    {
+        return $this->brochureFilename;
+    }
+
+    public function setBrochureFilename($brochureFilename)
+    {
+        $this->brochureFilename = $brochureFilename;
+
+        return $this;
+    }
 }
