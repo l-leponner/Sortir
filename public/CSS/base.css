@@ -234,7 +234,7 @@ section label{
     padding-left: 30px;
 }
 tbody tr:nth-child(even) {
-    background-color: cornflowerblue;
+    background-color: midnightblue;
 }
 thead{
     border-bottom: solid 2px aliceblue;
@@ -281,4 +281,8 @@ thead{
     height: 100px;
     table-layout: fixed;
     width: 60%;
+}
+
+.avatar img{
+    max-width: 120px;
 }

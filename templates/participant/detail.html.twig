@@ -8,7 +8,13 @@
 
     {%if app.user%}
         <div class="disAct">
-        <img src="{{ asset('uploads/brochures/' ~ user.brochureFilename())}}" alt="Image de profil" style="width: 75px; height: 75px; border-radius: 50%">
+            <div class="avatar">
+            {%if user.brochureFilename%}
+                <img src="{{ asset('uploads/brochures/' ~ user.brochureFilename())}}" alt="Image de profil">
+            {%else%}
+                <img src="{{ asset('img/default-avatar.png')}}" alt="Image de profil">
+            {%endif%}
+            </div>
         <br>
         <h3>{{user.username()}}</h3>
         <br>
