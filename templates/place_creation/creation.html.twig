@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Sortir.com | Créer un lieu{% endblock %}
-
+{%block stylesheets%}
+    <link rel="stylesheet" href="{{ asset('CSS/base.css') }}">
+{%endblock%}
 {% block body %}
-    <section class="container-fluid">
+    <section class="container-fluid" style="color: #dfdfdf">
 
     {{form_start(placeCreationForm)}}
 
@@ -59,7 +61,7 @@
         </div>
     <br>
         <div class="row">
-            <div class="offset-3 col-4">
+            <div class="dis">
     {{form_label(placeCreationForm.save)}}
     {{form_widget(placeCreationForm.save)}}
             </div>

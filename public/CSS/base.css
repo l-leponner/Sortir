@@ -273,3 +273,21 @@ section{
     table-layout: fixed;
     width: 60%;
 }
+/*Page de création de sortie*/
+.dis{
+    color: #dfdfdf;
+    padding-left: 30px;
+    padding-top: 60px;
+    padding-bottom: 30px;
+}
+.dis button{
+    display: inline-block;
+    border-radius: 50px;
+    margin-top: 10px;
+    padding-top: 2.5px;
+    padding-bottom: 2.5px;
+    width: 100px;
+    background: darkslateblue;
+    color: aliceblue;
+    border-color: #dfdfdf;
+}

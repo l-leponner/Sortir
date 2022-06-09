@@ -1,12 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Sortir.com | Modification de sortie{% endblock %}
-
+{%block stylesheets%}
+    <link rel="stylesheet" href="{{ asset('CSS/base.css') }}">
+{%endblock%}
 {% block body %}
 
-<h1>Créer une sortie</h1>
+<h1 class="divh">Créer une sortie</h1>
 
-
+<div class="dis">
 {{form_start(addActivityForm)}}
 
     {{form_label(addActivityForm.name)}}
@@ -40,6 +42,7 @@
 {{form_label(addActivityForm.place)}}
     {{form_widget(addActivityForm.place)}}
     {{form_errors(addActivityForm.place)}}
+
 <button><a href="{{path('place_creation')}}" title="Ajouter un lieu">+</a></button>
 <br>
     <input type="hidden" id="hiddenPath" data-url={{path('api_place')}}>
@@ -69,6 +72,7 @@
             const element = document.querySelector('#activity_place');
             element.dispatchEvent(e);
         </script>
+
     {%endblock%}
 
 {#<label for="street">Rue : </label><span id="street">{{activity.place.street}}</span><br>#}
@@ -88,6 +92,7 @@
 {#    <button type="submit" name="publishButton" ><a href="{{path('change_activity_publish', {'activity':activity.id})}}">Publier la sortie</a></button>#}
 {#<button type="submit" name="deleteButton" ><a href="{{path('change_activity_delete', {'activity':activity.id})}}">Supprimer la sortie</a></button>#}
 <button name="cancel" ><a href="{{path('index')}}">Annuler</a></button>
+</div>
 {{form_end(addActivityForm)}}
 
 {%endblock%}
