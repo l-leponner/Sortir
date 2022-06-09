@@ -17,6 +17,9 @@ class CancelActivityController extends AbstractController
     #[Route('/cancel/{activity}', name: 'cancel')]
     public function cancel(?Activity $activity, ActivityRepository $activityRepository, Request $request, StateRepository $stateRepository): Response
     {
+        if ($activity->getOrganizer() != $this->getUser()){
+            throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour cela.');
+        }
 
 //        $defaultData = ['message' => 'Type your message here'];
         $motiveForm = $this->createFormBuilder()
@@ -40,7 +43,7 @@ class CancelActivityController extends AbstractController
             $state = $stateRepository->findOneBy(['wording' => 'Activity cancelled']);
             $activity->setState($state);
             $activityRepository->add($activity, true);
-            $this->redirectToRoute('index');
+            return $this->redirectToRoute('index');
         }
         return $this->render('cancel_activity/cancel.html.twig', [
             'controller_name' => 'CancelActivityController',

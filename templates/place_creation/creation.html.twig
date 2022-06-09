@@ -3,30 +3,68 @@
 {% block title %}Sortir.com | Créer un lieu{% endblock %}
 
 {% block body %}
+    <section class="container-fluid">
+
     {{form_start(placeCreationForm)}}
 
+    <div class="row">
+        <div class="offset-3 col-3">
     {{form_label(placeCreationForm.name)}}
+        </div>
+        <div class="offset-1 col-3">
     {{form_widget(placeCreationForm.name)}}
+    </div>
     {{form_errors(placeCreationForm.name)}}
-    <br>
-    {{form_label(placeCreationForm.street)}}
-    {{form_widget(placeCreationForm.street)}}
-    {{form_errors(placeCreationForm.street)}}
-    <br>
-    {{form_label(placeCreationForm.latitude)}}
-    {{form_widget(placeCreationForm.latitude)}}
-    {{form_errors(placeCreationForm.latitude)}}
-    <br>
-    {{form_label(placeCreationForm.longitude)}}
-    {{form_widget(placeCreationForm.longitude)}}
-    {{form_errors(placeCreationForm.longitude)}}
-    <br>
+    </div>
 
-    {{form_label(placeCreationForm.city)}}
-    {{form_widget(placeCreationForm.city)}}
-    {{form_errors(placeCreationForm.city)}}
     <br>
+        <div class="row">
+            <div class="offset-3 col-3">
+    {{form_label(placeCreationForm.street)}}
+            </div>
+            <div class="offset-1 col-3">
+    {{form_widget(placeCreationForm.street)}}
+            </div>
+    {{form_errors(placeCreationForm.street)}}
+        </div>
+    <br>
+        <div class="row">
+            <div class="offset-3 col-3">
+    {{form_label(placeCreationForm.latitude)}}
+            </div>
+            <div class="offset-1 col-3">
+    {{form_widget(placeCreationForm.latitude)}}
+            </div>
+    {{form_errors(placeCreationForm.latitude)}}
+        </div>
+    <br>
+        <div class="row">
+            <div class="offset-3 col-3">
+    {{form_label(placeCreationForm.longitude)}}
+            </div>
+            <div class="offset-1 col-3">
+    {{form_widget(placeCreationForm.longitude)}}
+            </div>
+    {{form_errors(placeCreationForm.longitude)}}
+        </div>
+    <br>
+        <div class="row">
+            <div class="offset-3 col-3">
+    {{form_label(placeCreationForm.city)}}
+            </div>
+            <div class="offset-1 col-3">
+    {{form_widget(placeCreationForm.city)}}
+            </div>
+    {{form_errors(placeCreationForm.city)}}
+        </div>
+    <br>
+        <div class="row">
+            <div class="offset-3 col-4">
     {{form_label(placeCreationForm.save)}}
     {{form_widget(placeCreationForm.save)}}
+            </div>
     {{form_end(placeCreationForm)}}
+        </div>
+
+    </section>
 {% endblock %}

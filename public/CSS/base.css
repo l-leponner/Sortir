@@ -145,9 +145,3 @@ form{
     padding-top: 30px;
 }
 
-tbody:nth-child(even){
-    background-color: lightblue;
-}
-tbody:nth-child(odd){
-    background-color: cadetblue;
-}

@@ -18,6 +18,9 @@ class ChangeActivityController extends AbstractController
     public function display(?Activity $activity, Request $request, StateRepository $stateRepository, ActivityRepository $activityRepository): Response
     {
 
+        if ($activity->getOrganizer() != $this->getUser()){
+            throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour cela.');
+        }
 //        $user=$this->getUser();
         $changeActivityForm = $this->createForm(ChangeActivityType::class, $activity);
         $changeActivityForm->handleRequest($request);
