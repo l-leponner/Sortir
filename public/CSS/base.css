@@ -2,8 +2,8 @@
 /*base.html.twig*/
 
 *{
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
 }
 body{
     background : linear-gradient(darkslateblue, #10001d);
@@ -264,4 +264,21 @@ thead{
     border-radius: 10px;
     border-color: transparent;
 
+}
+/*Affichage de sortie*/
+.disAct{
+    color: #dfdfdf;
+    text-align: center;
+    padding-top: 60px;
+    padding-bottom: 30px;
+}
+.lstAct{
+    position: static;
+    padding-left: 30px;
+    color: #dfdfdf;
+    display: block;
+    overflow-y: scroll;
+    height: 100px;
+    table-layout: fixed;
+    width: 60%;
 }
