@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Sortir.com | Log in{% endblock %}
+{%block stylesheets%}
+    {{parent()}}
+<link rel="stylesheet" href="{{ asset('CSS/base.css') }}">
+{%endblock%}
 {%block nav%}{%endblock%}
 {% block body %}
 
@@ -11,13 +15,13 @@
 
     {% if app.user %}
         <div class="mb-3">
-           Vous êtes connecté {{ app.user.userIdentifier }}, voulez-vous vous <a href="{{ path('app_logout') }}">déconnecter</a>
+           Vous êtes connecté {{ app.user.userIdentifier }}, voulez-vous vous <a href="{{ path('app_logout') }}">déconnecter ?</a>
         </div>
     {% endif %}
 
 
     <br><br><br>
-    <div class="form">
+    <div class="form" >
         <input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="off" placeholder=" ">
         <label for="inputEmail" class="form__label">Identifiant</label>
     </div>
@@ -35,11 +39,12 @@
             <label>
                 <input type="checkbox" name="_remember_me"> Se souvenir de moi
             </label>
+            <button class="btnAct" id="id2" type="submit">
+                Connexion
+            </button>
         </div>
 
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Connexion
-    </button>
+
 </form>
 {% endblock %}
