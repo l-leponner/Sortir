@@ -3,18 +3,19 @@
 {% block title %}Modifier mon profil{% endblock %}
 {%block stylesheets%}
     {{parent()}}
-
+    <link rel="stylesheet" href="{{ asset('CSS/base.css') }}">
 {%endblock%}
 {% block body %}
 
     {%if app.user%}
 
-        <div class="coco">
+        <div class="coco1">
 
              <h2>Modifier mon profil</h2>
         </div>
             <br>
-{#        <img src={{editProfilForm.brochure.}}>#}
+        <div class="pro">
+        <img src="{{ asset('uploads/brochures/' ~ user.brochureFilename())}}" alt="Image de profil">
             {{ form_start(editProfilForm) }}
 
 
@@ -38,23 +39,21 @@
             <div class="coco">
             {{ form_row(editProfilForm.password)}}
             </div>
-            <div class="coco">
-            </div>
+
             <div class="coco">
             {{ form_row(editProfilForm.campus)}}
             </div>
-            <div class="coco">
+            <div class="coco2" >
             {{ form_row(editProfilForm.brochure)}}
             </div>
-            <div class="coco">
-            {{ form_row(editProfilForm.save)}}
-            </div>
 
-            {{ form_end(editProfilForm) }}
-            <div  class="coco" >
-            <a href="{{path('index')}}" type="submit"><button>Annuler</button></a>
+             <div id="id1">
+             {{ form_row(editProfilForm.save)}}
+             </div>
+            <div id="id2">
+            <a href="{{path('index')}}"><button>Annuler</button></a>
             </div>
-
+        {{ form_end(editProfilForm) }}
 
         {%else %}
             <h2 class="para">La consultation de profil nécessite une connexion à votre compte</h2>
@@ -63,6 +62,7 @@
             <div class="alert">
                 <span class="closebtn" onclick="this.parentElement.style.display='none';"><a href="{{ path('app_login') }}">&times;</a></span>
                 <strong>Interdit ! </strong>Accès non autorisé.
+            </div>
             </div>
     {%endif%}
 

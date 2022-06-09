@@ -1,59 +1,92 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Sortir.com | Homepage{% endblock %}
-
+{%block stylesheets%}
+    {{parent()}}
+    <link rel="stylesheet" href="{{ asset('CSS/base.css') }}">
+{%endblock%}
 {% block body %}
 
     {%if app.user%}
-        <p>Date du jour : {{date('now')|date("d/m/Y")}}</p>
-        <p>Participant : {{app.user.userIdentifier}}</p>
+        <p class="divh">Date du jour : {{date('now')|date("d/m/Y")}}</p>
+        <p class="divh">Participant : {{app.user.userIdentifier}}</p>
 
     {%endif%}
 
-    <section>
-        <h2>Filtrer les sorties</h2>
-
+    <section class="">
+        <div class="divh">
+        <h4>Filtrer les sorties</h4>
+        </div>
 
 
         {{form_start(searchForm)}}
-
+        <div class="fil">
+        <div class="campus">
         {{form_label(searchForm.participantCampus)}}
         {{form_widget(searchForm.participantCampus)}}
         {{form_errors(searchForm.participantCampus)}}
+        </div>
         <br>
+        <div class="name">
         {{form_label(searchForm.nameKeyword)}}
         {{form_widget(searchForm.nameKeyword)}}
         {{form_errors(searchForm.nameKeyword)}}
-        <br>
-        {{form_label(searchForm.minDateTimeBeginning)}}
-        {{form_widget(searchForm.minDateTimeBeginning)}}
-        {{form_errors(searchForm.minDateTimeBeginning)}}
-        <br>
-        {{form_label(searchForm.maxDateTimeBeginning)}}
-        {{form_widget(searchForm.maxDateTimeBeginning)}}
-        {{form_errors(searchForm.maxDateTimeBeginning)}}
+        </div>
         <br>
 
+        <div class="">
+        <div class="offset-1 col-1">
+        {{form_label(searchForm.minDateTimeBeginning)}}
+        </div>
+            <div class="col-2">
+        {{form_widget(searchForm.minDateTimeBeginning)}}
+            </div>
+        {{form_errors(searchForm.minDateTimeBeginning)}}
+
+
+            <div class="col-1">
+        {{form_label(searchForm.maxDateTimeBeginning)}}
+            </div>
+        <div class="col-2">
+        {{form_widget(searchForm.maxDateTimeBeginning)}}
+        </div>
+        {{form_errors(searchForm.maxDateTimeBeginning)}}
+
+        </div>
+
+        <br>
+        <div class="cl1">
         {{form_label(searchForm.filterActiOrganized)}}
         {{form_widget(searchForm.filterActiOrganized)}}
         {{form_errors(searchForm.filterActiOrganized)}}
+        </div>
         <br>
+        <div class="cl1">
         {{form_label(searchForm.filterActiJoined)}}
         {{form_widget(searchForm.filterActiJoined)}}
         {{form_errors(searchForm.filterActiJoined)}}
+        </div>
         <br>
+        <div class="cl1">
         {{form_label(searchForm.filterActiNotJoined)}}
         {{form_widget(searchForm.filterActiNotJoined)}}
         {{form_errors(searchForm.filterActiNotJoined)}}
+        </div>
         <br>
+        <div class="cl1">
         {{form_label(searchForm.filterActiEnded)}}
         {{form_widget(searchForm.filterActiEnded)}}
         {{form_errors(searchForm.filterActiEnded)}}
+        </div>
         <br>
+        <div typeof="submit" >
 {#        <button type="submit" name="searchButton" >Rechercher</button>#}
         {{form_label(searchForm.save)}}
         {{form_widget(searchForm.save)}}
+        </div>
+
         {{form_end(searchForm)}}
+
     </section>
     <div class="flashMessages">
         {%for label,messages in app.flashes%}
@@ -67,8 +100,8 @@
     </div>
     {%if searchButton != false%}
 
-        <table>
-            <tr>
+        <table class="tab1">
+            <tr id="idtab">
                 <th>Nom de la sortie</th>
                 <th>Date de la sortie</th>
                 <th>Clôture</th>
@@ -89,27 +122,26 @@
                     <td>{{activity.participants|length}} / {{activity.maxNbRegistrations}}</td>
                     <td>{{activity.state.wording}}</td>
                     <td>{%if app.user in activity.participants%}X{%endif%}</td>
-                    <td><a href="{{path('participant_detail', {'user':activity.organizer.id})}}">{{activity.organizer.username}}</a></td>
+                    <td><a  class="show" href="{{path('participant_detail', {'user':activity.organizer.id})}}">{{activity.organizer.username}}</a></td>
                     <td>
                         {#Action Afficher#}
-                        {%if activity.state.wording != 'Activity created'%}<button><a href="{{path('displayActivity_display', {'activity':activity.id})}}">Afficher</a></button> {%endif%}
+                        {%if activity.state.wording != 'Activity created'%}<button class="show"><a href="{{path('displayActivity_display', {'activity':activity.id})}}">Afficher</a></button> {%endif%}
                         {#Action Se désister#}
-                        {%if (app.user in activity.participants) and (app.user != activity.organizer)%}<button><a href="{{path('desist', {'activity':activity.id})}}">Se désister</a></button>{%endif%}
+                        {%if (app.user in activity.participants) and (app.user != activity.organizer)%}<button  class="show"><a href="{{path('desist', {'activity':activity.id})}}">Se désister</a></button>{%endif%}
                         {#Action S'inscrire#}
-                        {%if app.user not in activity.participants and activity.state.wording == 'Activity opened'%}<button><a href="{{path('join', {'activity':activity.id})}}">S'inscrire</a></button>{%endif%}
+                        {%if app.user not in activity.participants and activity.state.wording == 'Activity opened'%}<button  class="show"><a href="{{path('join', {'activity':activity.id})}}">S'inscrire</a></button>{%endif%}
 
                         {#Action Modifier + Publier#}
                         {%if activity.state.wording == 'Activity created'%}<button><a href="{{path('change_activity_edit', {'activity':activity.id})}}">Modifier</a></button>
                             <button><a href="{{path('publish', {'activity':activity.id})}}">Publier</a></button>{%endif%}
-                {%if activity.state.wording == 'Activity opened' and app.user == activity.organizer%}<button><a href="#">Annuler</a></button>{%endif%}
+                {%if activity.state.wording == 'Activity opened' and app.user == activity.organizer%}<button  class="show"><a href="#">Annuler</a></button>{%endif%}
                     </td>
                 </tr>
 {#                        {%endif%}#}
                 {%endif%}
             {%endfor%}
         </table>
-
-
+        <br>
     {%endif%}
-    <button><a href="{{path('activity')}}">Créer une sortie</a></button>
+    <button class="btnAct"><a href="{{path('activity')}}" id="bt1">Créer une sortie</a></button>
 {% endblock %}
