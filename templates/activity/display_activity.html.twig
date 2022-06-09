@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Sortir.com | Affichage de sortie{% endblock %}
-
+{%block stylesheets%}
+    <link rel="stylesheet" href="{{ asset('CSS/base.css') }}">
+{%endblock%}
 {% block body %}
-
+<div class="disAct">
     <h2>Afficher une sortie</h2>
     <label>Nom de la sortie: <span>{{activity.name}}</span></label><br>
     <label>Date et heure de la sortie: <span>{{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</span></label><br>
@@ -16,11 +18,12 @@
     <label>Rue: <span>{{activity.place.street}}</span></label><br>
     <label>Latitude: <span>{{activity.place.latitude}}</span></label><br>
     <label>Longitude: <span>{{activity.place.longitude}}</span></label><br>
+</div>
 
-    <div>
-        <h4>Liste des participants inscrits :</h4>
+        <h4 class="divh">Liste des participants inscrits :</h4>
+    <div class="lstAct">
         <table>
-            <tr>
+            <tr id="idtr">
                 <th> Pseudo</th>
                 <th> Nom</th>
             </tr>
@@ -33,4 +36,5 @@
 
         </table>
     </div>
+
 {% endblock %}

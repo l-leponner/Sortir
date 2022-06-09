@@ -2,11 +2,12 @@
 
 {% block title %}Profil de {{ user.username}}{% endblock %}
 {%block stylesheets%}
-    <link rel="stylesheet" href="{{ asset('base.css') }}">
+    <link rel="stylesheet" href="{{ asset('CSS/base.css') }}">
 {%endblock%}
 {% block body %}
 
     {%if app.user%}
+        <div class="disAct">
         <img src="{{ asset('uploads/brochures/' ~ user.brochureFilename())}}" alt="Image de profil" style="width: 75px; height: 75px; border-radius: 50%">
         <br>
         <h3>{{user.username()}}</h3>
@@ -21,8 +22,9 @@
         <br>
         <label for="{{user.campus.name}}">Campus : </label><span id="user-firstname">{{user.campus.name}}</span>
         <br>
-        <a href="{{path('index')}}" class="sidenav-link active" type="submit"><button>Retour à l'accueil</button></a>
-        <button onClick="window.history.back();" type="button">Page précédente</button>
+        <a href="{{path('index')}}" class="sidenav-link active" type="submit"><button class="btnAct">Retour à l'accueil</button></a>
+        <button onClick="window.history.back();" type="button" class="btnAct">Page précédente</button>
+        </div>
     {%endif%}
 
 {% endblock %}
