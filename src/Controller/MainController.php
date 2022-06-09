@@ -187,9 +187,9 @@ class MainController extends AbstractController
         $currentParticipant = $this->getUser();
         $activity->removeParticipant($currentParticipant);
 
-        if (!in_array($currentParticipant, $activity->getParticipants())){
-            throw $this->createAccessDeniedException('Vous ne faites pas partie des participants, vous ne pouvez pas vous désister.');
-        }
+//        if (!in_array($currentParticipant, $activity->getParticipants())){
+//            throw $this->createAccessDeniedException('Vous ne faites pas partie des participants, vous ne pouvez pas vous désister.');
+//        }
 
         if (count($activity->getParticipants()) < $activity->getMaxNbRegistrations()){
             $stateOpened = $stateRepository->findOneBy(['wording' => 'Activity opened']);
