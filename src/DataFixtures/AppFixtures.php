@@ -163,7 +163,22 @@ class AppFixtures extends Fixture
                     $laurentpwd
                 )
             );
-        $this->manager->persist($participantLaurent);
+        $participantdDemo = new Participant();
+        $pwd = 'a';
+        $participantdDemo->setName('Legeas')
+            ->setFirstname('Arthur')
+            ->setPhone('0605040302')
+            ->setActive(true)
+            ->setEmail('arthurlegeas@mail.com')
+            ->setCampus($this->faker->randomElement($campuses))
+            ->setUsername('ARTHURLEGEAS')
+            ->setPassword(
+                $this->hasher->hashPassword(
+                    $participantdDemo,
+                    $pwd
+                )
+            );
+        $this->manager->persist($participantdDemo);
         $participantAmjad = new Participant();
         $amjadPwd = '12345';
         $participantAmjad->setName('Jassouma')
@@ -199,7 +214,7 @@ class AppFixtures extends Fixture
 
         $this->manager->flush();
 
-        for ($i=1; $i<20; $i++){
+        for ($i=1; $i<30; $i++){
             $participant = new Participant();
             $ppwd = 'ppwd';
             $participant->setName($this->faker->lastName())
@@ -245,7 +260,7 @@ class AppFixtures extends Fixture
 
     private function addActivities()
     {
-        $activitiesNames = ['Billard', 'Course de karting', 'Nouveau film au cinéma', 'Baignade', 'BBQ', 'Belotte', 'LAN'];
+        $activitiesNames = ['Billard', 'Course de karting', 'Nouveau film au cinéma', 'Baignade', 'BBQ', 'Belotte', 'LAN', 'Ribouldingue', 'Projet Symfony'];
         $campusRepo = $this->manager->getRepository(Campus::class);
         $campuses = $campusRepo->findAll();
 
@@ -265,8 +280,8 @@ class AppFixtures extends Fixture
                 ->setDateTimeBeginning($this->faker->dateTimeBetween('-2 month', 'now'))
                 ->setDuration($this->faker->numberBetween(10, 240))
                 ->setInfosActivity(join($this->faker->words(5)))
-                ->setDateLimitRegistration($this->faker->dateTimeBetween('-2 month', '-2 weeks'))
-                ->setMaxNbRegistrations($this->faker->numberBetween(3, 12))
+                ->setDateLimitRegistration($this->faker->dateTimeBetween('-2 month', '-1 week'))
+                ->setMaxNbRegistrations($this->faker->numberBetween(2, 12))
                 ->setState($this->faker->randomElement($states))
                 ->setPlace($this->faker->randomElement($places))
                 ->setOrganizer($this->faker->randomElement($participants))
