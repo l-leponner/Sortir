@@ -10,6 +10,7 @@ use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\StateRepository;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ class MainController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(Request $request,
                           ActivityRepository $activityRepository,
-                          StateRepository $stateRepository
+                          StateRepository $stateRepository, EntityManagerInterface $entityManager
                           ): Response
     {
 
@@ -42,19 +43,29 @@ class MainController extends AbstractController
         $searchForm = $this->createForm(SearchType::class, $searchActivityModel);
         $searchForm->handleRequest($request);
 
-        if(!$searchForm->get('save')->isClicked()){
-//            $stateOpened = $stateRepository->findOneBy(['wording' => 'Activity opened']);
-//            $stateClosed = $stateRepository->findOneBy(['wording' => 'Activity closed']);
-//            $stateEnded = $stateRepository->findOneBy(['wording' => 'Activity ended']);
-//            $stateInProg = $stateRepository->findOneBy(['wording' => 'Activity in progress']);
-//            $stateArch = $stateRepository->findOneBy(['wording' => 'Activity archived']);
+        if ($searchActivityModel->getMinDateTimeBeginning()){
+            $searchActivityModel->getMinDateTimeBeginning()->modify('00:00:01');
+        }
+
+        if ($searchActivityModel->getMaxDateTimeBeginning()){
+            $searchActivityModel->getMaxDateTimeBeginning()->modify('23:59:59');
+        }
+
+
+
+        if($searchForm->get('save')->isClicked()){
+
+            $stateCreated = null;
             $stateOpened = null;
             $stateClosed = null;
             $stateEnded = null;
             $stateInProg = null;
             $stateArch = null;
-            $states =$stateRepository->findAll(); //foreach
+            $states =$stateRepository->findAll();
             foreach ($states as $state){
+                if ($state->getWording() == 'Activity created'){
+                    $stateCreated = $state;
+                }
                 if ($state->getWording() == 'Activity opened'){
                     $stateOpened = $state;
                 }
@@ -70,47 +81,84 @@ class MainController extends AbstractController
                 if ($state->getWording() == 'Activity archived'){
                     $stateArch = $state;
                 }
+                if ($state->getWording() == 'Activity cancelled'){
+                    $stateCancelled = $state;
+                }
 
 
             }
             $activities = $activityRepository->findActivitiesAndStates();
 
 
-            foreach ($activities as $activity){
-                $dateEndActivity = $activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute');
-                $dateArchive = $activity->getDateTimeBeginning()->modify('+' . $activity->getDuration() . 'minute')->modify('+1 month');
-                if (count($activity->getParticipants()) < $activity->getMaxNbRegistrations() &&
-                    $activity->getDateLimitRegistration() > new \DateTime()){
-                    $activity->setState($stateOpened);
 
-                } else {
+            foreach ($activities as $activity){
+
+                $dateBeginning = $activity->getDateTimeBeginning();
+                $dateEndActivity = clone $activity->getDateTimeBeginning();
+                $duration = $activity->getDuration();
+                $dateEndActivity->modify('+' . $duration . 'minutes');
+                $dateArchive =  clone $dateEndActivity;
+                $dateArchive->modify('+1 month');
+                $dateLimitReg = $activity->getDateLimitRegistration();
+
+                $dateNow = new \DateTime('now');
+
+
+
+                if ($activity->getState() == $stateClosed
+                    && (count($activity->getParticipants()) < $activity->getMaxNbRegistrations()
+                        && $dateLimitReg > $dateNow) ){
+                    $activity->setState($stateOpened);
+//                    if ($activity->getId() == 67){
+//                        dump($activity);
+//                    }
+                }
+                if ($activity->getState() == $stateOpened &&
+                    (count($activity->getParticipants()) == $activity->getMaxNbRegistrations()
+                        || $dateLimitReg < $dateNow) ){
                     $activity->setState($stateClosed);
 
                 }
-                if($dateEndActivity < new \DateTime()){
-                    $activity->setState($stateEnded);
 
-                } elseif ($dateEndActivity > new \DateTime()
-                    && $activity->getDateTimeBeginning() < new \DateTime()){
+                if ( ($dateBeginning < $dateNow
+                    && $dateNow < $dateEndActivity)
+                    ){
                     $activity->setState($stateInProg);
 
                 }
-                if($dateArchive < new \DateTime()){
+                if ($dateEndActivity < $dateNow
+                    && $activity->getState() == $stateInProg){
+                    $activity->setState($stateEnded);
+
+                }
+
+                if($dateArchive < $dateNow
+                    && $activity->getState() == $stateEnded){
                     $activity->setState($stateArch);
 
                 }
-                $activityRepository->add($activity, true);
+                if($dateArchive < $dateNow
+                    && $activity->getState() == $stateCancelled){
+                    $activity->setState($stateArch);
+
+                }
+                if($activity->getState() == $stateCreated
+                    && $dateBeginning < $dateNow){
+                    $activity->setState($stateEnded);
+
+                }
+
+
+                $activityRepository->add($activity, false);
             }
+            $entityManager->flush();
+
         }
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()){
 
-
-
             $lstActivities = $activityRepository->findByFilters($searchActivityModel, $currentParticipant, $stateRepository);
-            if (!$lstActivities){
-                $this->addFlash("error", "Pas de sorties associées à la recherche.");
-            }
+
 
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',
@@ -138,6 +186,11 @@ class MainController extends AbstractController
          */
         $currentParticipant = $this->getUser();
         $activity->removeParticipant($currentParticipant);
+
+//        if (!in_array($currentParticipant, $activity->getParticipants())){
+//            throw $this->createAccessDeniedException('Vous ne faites pas partie des participants, vous ne pouvez pas vous désister.');
+//        }
+
         if (count($activity->getParticipants()) < $activity->getMaxNbRegistrations()){
             $stateOpened = $stateRepository->findOneBy(['wording' => 'Activity opened']);
             $activity->setState($stateOpened);
@@ -156,6 +209,10 @@ class MainController extends AbstractController
          */
         $currentParticipant = $this->getUser();
 
+        if($activity->getState()->getWording() == 'Activity closed'){
+            throw $this->createAccessDeniedException('Vous ne pouvez pas vous inscrire');
+        }
+
         $activity->addParticipant($currentParticipant);
         if (count($activity->getParticipants()) == $activity->getMaxNbRegistrations()){
             $stateClosed = $stateRepository->findOneBy(['wording' => 'Activity closed']);
@@ -171,6 +228,10 @@ class MainController extends AbstractController
                             ActivityRepository $activityRepository,
                             StateRepository $stateRepository): Response
     {
+
+        if ($activity->getOrganizer() != $this->getUser()){
+            throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour cela.');
+        }
 
         $state = $stateRepository->findOneBy(['wording' => 'Activity opened']);
         $activity->setState($state);

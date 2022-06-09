@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -11,7 +11,7 @@
         {% endblock %}
 
         {% block javascripts %}
-{#            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js">#}
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js">
         {% endblock %}
     </head>
     {%block header%}
@@ -28,7 +28,7 @@
         </header>
 
     {%endblock%}
-{%block body%}
+
 
     <body>
 {# <a href="{{path('index')}}" title="Go back home"><img src="{{asset('img/logo.png')}}" alt="Logo Sortir" title="Logo Sortir"></a>#}
@@ -40,8 +40,8 @@
             </div>
         {%endfor%}
     {%endfor%}
-
+{%block body%}
+{% endblock %}
     </body>
 
 </html>
-{% endblock %}

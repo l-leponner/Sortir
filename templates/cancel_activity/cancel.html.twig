@@ -6,4 +6,19 @@
 
     <h1>Annuler une sortie</h1>
 
+    <label>Nom de la sortie: <span>{{activity.name}}</span></label><br>
+    <label>Date de la sortie: <span>{{activity.dateTimeBeginning|date("d/m/Y")}}</span></label><br>
+    <label>Campus: <span>{{activity.campus.name}}</span></label><br>
+    <label>Lieu: <span>{{activity.place.name}} : {{activity.place.street}} {{activity.place.city.postCode}} {{activity.place.city.name}}</span></label><br>
+    {{form_start(motiveForm)}}
+
+    {{form_label(motiveForm.motive)}}
+    {{form_widget(motiveForm.motive)}}
+    {{form_errors(motiveForm.motive)}}
+
+    <br>
+    {{form_label(motiveForm.save)}}
+    {{form_widget(motiveForm.save)}}
+    {{form_end(motiveForm)}}
+    <button name="cancel" ><a href="{{path('index')}}">Annuler</a></button>
 {% endblock %}

@@ -19,6 +19,7 @@ class ActivityController extends AbstractController
     public function add(Request $request, StateRepository $stateRepository, ActivityRepository $activityRepository): Response
     {
 
+
         $activity = new Activity();
 
         /**

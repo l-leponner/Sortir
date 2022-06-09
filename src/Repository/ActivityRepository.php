@@ -96,17 +96,17 @@ class ActivityRepository extends ServiceEntityRepository
                 ->setParameter('keyWord', '%'.$nameKeyword.'%');
         }
         if ($minDateTimeBeginning){
-            $minDateTimeBeginning->format('Y-m-d 23:59:59');
+//            $minDateTimeBeginning->format('Y-m-d 00:00:01');
 
             $queryBuilder
-                ->andWhere('a.dateTimeBeginning > :minDateTimeBeginning')
+                ->andWhere('a.dateTimeBeginning >= :minDateTimeBeginning')
                 ->setParameter('minDateTimeBeginning', $minDateTimeBeginning);
 
         }
         if ($maxDateTimeBeginning){
-            $maxDateTimeBeginning->format('Y-m-d 00:00:00');
+//            $maxDateTimeBeginning->format('Y-m-d 23:59:59');
             $queryBuilder
-                ->andWhere('a.dateTimeBeginning < :maxDateTimeBeginning')
+                ->andWhere(':maxDateTimeBeginning >= a.dateTimeBeginning')
                 ->setParameter('maxDateTimeBeginning', $maxDateTimeBeginning);
         }
 
@@ -131,12 +131,15 @@ class ActivityRepository extends ServiceEntityRepository
         }
 
         if ($filterActiEnded){
-            $state = $stateRepository->findOneBy(['wording' => 'Activity ended']);
+            $state = $stateRepository->findBy(['wording' => 'Activity ended']);
+
             $queryBuilder
-                ->andWhere('a.state = :state')
+                ->andWhere('s = :state')
                 ->setParameter('state', $state)
 
             ;
+
+
         }
 
         $created = $stateRepository->findOneBy(['wording' => 'Activity created']);
@@ -147,24 +150,15 @@ class ActivityRepository extends ServiceEntityRepository
 
         $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
 //            ->setMaxResults(10) <= si je veux avoir un maximum de résultats
+
         $query = $queryBuilder->getQuery();
 
             return $query->getResult();
+
     }
 
     public function findActivitiesAndStates()
     {
-
-//        $fields = [
-//            'a.name',
-//            'a.dateTimeBeginning',
-//            'a.duration',
-//            'a.dateLimitRegistration',
-//            'a.maxNbRegistrations',
-//            'a.state',
-//            's.wording'];
-        $fields = 'partial a.{id, name, dateTimeBeginning, duration, dateLimitRegistration, maxNbRegistrations, maxNbRegistrations, state, participants}, 
-        partial s.{id, wording}, partial p.{id}';
 
         $queryBuilder = $this->createQueryBuilder('a');
         $queryBuilder
