@@ -131,15 +131,13 @@ class ActivityRepository extends ServiceEntityRepository
         }
 
         if ($filterActiEnded){
-            $state = $stateRepository->findBy(['wording' => 'Activity ended']);
+            $state = $stateRepository->findOneBy(['wording' => 'Activity ended']);
 
             $queryBuilder
                 ->andWhere('s = :state')
                 ->setParameter('state', $state)
 
             ;
-
-
         }
 
         $created = $stateRepository->findOneBy(['wording' => 'Activity created']);
