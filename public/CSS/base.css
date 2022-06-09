@@ -2,8 +2,8 @@
 /*base.html.twig*/
 
 *{
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 body{
     background : linear-gradient(darkslateblue, #10001d);
@@ -216,13 +216,28 @@ header ul li a:hover{
 }
 /*La page d'acueil*/
 section{
-    display: inline-block;
+    /*display: inline-block;*/
     padding-left: 50px;
+}
+
+section label{
+    color: #dfdfdf;
+}
+
+.indexLabel{
+    display: flex;
+    justify-content: flex-end;
 }
 .divh{
     color: #dfdfdf;
     padding-top: 2px;
     padding-left: 30px;
+}
+tbody tr:nth-child(even) {
+    background-color: cornflowerblue;
+}
+thead{
+    border-bottom: solid 2px aliceblue;
 }
 .tab1 {
     color: #dfdfdf;
@@ -231,23 +246,18 @@ section{
     border-color: aliceblue;
     display: block;
     overflow-y: scroll;
-    height: 100px;
+    height: 200px;
     table-layout: fixed;
-    width: 60%;
+    width: 80%;
+    margin-left: 10%;
 }
-/*#idtab{*/
-/*    display: block;*/
-/*    position: absolute;*/
-/*    background: darkslateblue;*/
-/*}*/
+
 .tab1 td, tfoot, th, thead, tr{
     padding-right: 10px;
     padding-left: 10px;
 }
 
-.fil label{
-    color: #dfdfdf;
-}
+
 .show{
     background-color: transparent;
     color: #dfdfdf;

@@ -8,79 +8,111 @@
 {% block body %}
 
     {%if app.user%}
-        <p class="divh">Date du jour : {{date('now')|date("d/m/Y")}}</p>
-        <p class="divh">Participant : {{app.user.userIdentifier}}</p>
+        <div class="container infosUser">
+            <div class="row">
+                <p class="divh offset-9 col-3">Date du jour : {{date('now')|date("d/m/Y")}}</p>
+            </div>
+            <div class="row">
+                <p class="divh offset-9 col-3">Participant : {{app.user.userIdentifier}}</p>
+            </div>
+        </div>
 
     {%endif%}
 
-    <section class="">
+    <section>
         <div class="divh">
         <h4>Filtrer les sorties</h4>
         </div>
 
 
         {{form_start(searchForm)}}
-        <div class="fil">
-        <div class="campus">
+        <div class="container filterContainer">
+
+            <div class="row participantCampus">
+        <div class="offset-1 col-3 indexLabel">
         {{form_label(searchForm.participantCampus)}}
+        </div>
+                <div class="offset-1 col-5">
         {{form_widget(searchForm.participantCampus)}}
+                </div>
         {{form_errors(searchForm.participantCampus)}}
         </div>
-        <br>
-        <div class="name">
-        {{form_label(searchForm.nameKeyword)}}
-        {{form_widget(searchForm.nameKeyword)}}
-        {{form_errors(searchForm.nameKeyword)}}
-        </div>
-        <br>
 
-        <div class="">
-        <div class="offset-1 col-1">
+            <div class="row">
+                <div class="offset-1 col-3 indexLabel">
+        {{form_label(searchForm.nameKeyword)}}
+                </div>
+                <div class="offset-1 col-5">
+        {{form_widget(searchForm.nameKeyword)}}
+                </div>
+        {{form_errors(searchForm.nameKeyword)}}
+            </div>
+
+
+            <div class="row minDateTimeBeginning">
+                <div class="offset-1 col-3 indexLabel">
         {{form_label(searchForm.minDateTimeBeginning)}}
-        </div>
-            <div class="col-2">
+                </div>
+                <div class="offset-1 col-5">
         {{form_widget(searchForm.minDateTimeBeginning)}}
             </div>
         {{form_errors(searchForm.minDateTimeBeginning)}}
-
-
-            <div class="col-1">
-        {{form_label(searchForm.maxDateTimeBeginning)}}
             </div>
-        <div class="col-2">
+
+            <div class="row maxDateTimeBeginning">
+                <div class="offset-1 col-3  indexLabel">
+        {{form_label(searchForm.maxDateTimeBeginning)}}
+            <</div>
+                <div class="offset-1 col-5">
         {{form_widget(searchForm.maxDateTimeBeginning)}}
         </div>
         {{form_errors(searchForm.maxDateTimeBeginning)}}
+            </div>
 
-        </div>
 
-        <br>
-        <div class="cl1">
+                <div class="row">
+                    <div class="offset-1 col-3 indexLabel">
         {{form_label(searchForm.filterActiOrganized)}}
+                    </div>
+                    <div class="offset-1 col-5">
         {{form_widget(searchForm.filterActiOrganized)}}
+                    </div>
         {{form_errors(searchForm.filterActiOrganized)}}
-        </div>
-        <br>
-        <div class="cl1">
+                </div>
+                    <div class="row">
+                        <div class="offset-1 col-3 indexLabel">
         {{form_label(searchForm.filterActiJoined)}}
+                        </div>
+                        <div class="offset-1 col-5">
         {{form_widget(searchForm.filterActiJoined)}}
+                        </div>
         {{form_errors(searchForm.filterActiJoined)}}
-        </div>
-        <br>
-        <div class="cl1">
+                    </div>
+                <div class="row">
+                    <div class="offset-1 col-3 indexLabel">
         {{form_label(searchForm.filterActiNotJoined)}}
+                    </div>
+                    <div class="offset-1 col-5">
         {{form_widget(searchForm.filterActiNotJoined)}}
+                    </div>
         {{form_errors(searchForm.filterActiNotJoined)}}
-        </div>
-        <br>
-        <div class="cl1">
+                </div>
+                <div class="row">
+                    <div class="offset-1 col-3 indexLabel">
         {{form_label(searchForm.filterActiEnded)}}
+                    </div>
+                    <div class="offset-1 col-5">
         {{form_widget(searchForm.filterActiEnded)}}
+                    </div>
         {{form_errors(searchForm.filterActiEnded)}}
-        </div>
+                </div>
+
+</div>
+
+
         <br>
         <div typeof="submit" >
-{#        <button type="submit" name="searchButton" >Rechercher</button>#}
+
         {{form_label(searchForm.save)}}
         {{form_widget(searchForm.save)}}
         </div>
@@ -101,6 +133,7 @@
     {%if searchButton != false%}
 
         <table class="tab1">
+            <thead>
             <tr id="idtab">
                 <th>Nom de la sortie</th>
                 <th>Date de la sortie</th>
@@ -111,10 +144,11 @@
                 <th>Organisateur</th>
                 <th>Actions</th>
             </tr>
-
+            </thead>
+<tbody>
             {%for activity in lstActivities%}
                 {%if activity.state.wording != 'Activity archived'%}
-{#                    {%if app.user != activity.organizer and activity.state.wording != 'Activity created'%}#}
+
                 <tr>
                     <td>{{activity.name}}</td>
                     <td>{{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</td>
@@ -134,12 +168,13 @@
                         {#Action Modifier + Publier#}
                         {%if activity.state.wording == 'Activity created'%}<button><a href="{{path('change_activity_edit', {'activity':activity.id})}}">Modifier</a></button>
                             <button><a href="{{path('publish', {'activity':activity.id})}}">Publier</a></button>{%endif%}
-                {%if activity.state.wording == 'Activity opened' and app.user == activity.organizer%}<button  class="show"><a href="#">Annuler</a></button>{%endif%}
+                {%if activity.state.wording == 'Activity opened' and app.user == activity.organizer%}<button  class="show"><a href="{{path('cancel', {'activity':activity.id})}}">Annuler</a></button>{%endif%}
                     </td>
                 </tr>
-{#                        {%endif%}#}
+
                 {%endif%}
             {%endfor%}
+</tbody>
         </table>
         <br>
     {%endif%}
