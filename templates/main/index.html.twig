@@ -66,18 +66,18 @@
         {%endfor%}
     </div>
     {%if searchButton != false%}
-
-        <table>
+    <section>
+        <table class="container-fluid">
             <thead>
-            <tr>
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                <th>Clôture</th>
-                <th>Inscrits/places</th>
-                <th>Etat</th>
-                <th>Inscrit</th>
-                <th>Organisateur</th>
-                <th>Actions</th>
+            <tr class="row">
+                <th class="offset-1 col-1">Nom de la sortie</th>
+                <th class="col-2">Date de la sortie</th>
+                <th class="col-1">Clôture</th>
+                <th class="col-1">Inscrits/places</th>
+                <th class="col-1">Etat</th>
+                <th class="col-1">Inscrit</th>
+                <th class="col-1">Organisateur</th>
+                <th class="col-2">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -87,15 +87,15 @@
 {#                    {%if app.user != activity.organizer and activity.state.wording != 'Activity created'%}#}
 
 
-                    <tr>
-                    <td>{{activity.name}}</td>
-                    <td>{{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</td>
-                    <td>{{activity.dateLimitRegistration|date("d/m/Y")}}</td>
-                    <td>{{activity.participants|length}} / {{activity.maxNbRegistrations}}</td>
-                    <td>{{activity.state.wording}}</td>
-                    <td>{%if app.user in activity.participants%}X{%endif%}</td>
-                    <td><a href="{{path('participant_detail', {'user':activity.organizer.id})}}">{{activity.organizer.username}}</a></td>
-                    <td>
+                    <tr class="row">
+                    <td class="offset-1 col-1">{{activity.name}}</td>
+                    <td class="col-2">{{activity.dateTimeBeginning|date("d/m/Y H:i:s")}}</td>
+                    <td class="col-1">{{activity.dateLimitRegistration|date("d/m/Y")}}</td>
+                    <td class="col-1">{{activity.participants|length}} / {{activity.maxNbRegistrations}}</td>
+                    <td class="col-1">{{activity.state.wording}}</td>
+                    <td class="col-1">{%if app.user in activity.participants%}X{%endif%}</td>
+                    <td class="col-1"><a href="{{path('participant_detail', {'user':activity.organizer.id})}}">{{activity.organizer.username}}</a></td>
+                    <td  class="col-2">
                         {#Action Afficher#}
                         {%if activity.state.wording != 'Activity created'%}<button><a href="{{path('displayActivity_display', {'activity':activity.id})}}">Afficher</a></button> {%endif%}
                         {#Action Se désister#}
@@ -120,4 +120,5 @@
 
     {%endif%}
     <button><a href="{{path('activity')}}">Créer une sortie</a></button>
+    </section>
 {% endblock %}
