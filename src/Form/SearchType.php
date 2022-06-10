@@ -80,7 +80,8 @@ class SearchType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Rechercher',
                 'attr' => [
-                    'name' => 'searchButton'
+                    'name' => 'searchButton',
+                    'class' => 'btnAct'
                 ]
             ])
         ;

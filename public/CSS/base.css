@@ -277,9 +277,9 @@ section{
 /*Page de création de sortie*/
 .dis{
     color: #dfdfdf;
-    padding-left: 30px;
-    padding-top: 60px;
-    padding-bottom: 30px;
+    /*padding-left: 30px;*/
+    /*padding-top: 60px;*/
+    /*padding-bottom: 30px;*/
 }
 .dis button{
     display: inline-block;

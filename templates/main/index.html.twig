@@ -19,7 +19,7 @@
 
     {%endif%}
 
-    <section>
+    <section class="container">
         <div class="divh">
         <h4>Filtrer les sorties</h4>
         </div>
@@ -28,6 +28,7 @@
         {{form_start(searchForm)}}
         <div class="dis">
 
+            <div class="container">
             <div class="row participantCampus">
         <div class="offset-1 col-3 indexLabel">
         {{form_label(searchForm.participantCampus)}}
@@ -68,8 +69,8 @@
         </div>
         {{form_errors(searchForm.maxDateTimeBeginning)}}
             </div>
-
-
+            </div>
+<div class="container">
                 <div class="row">
                     <div class="offset-1 col-3 indexLabel">
         {{form_label(searchForm.filterActiOrganized)}}
@@ -106,6 +107,7 @@
                     </div>
         {{form_errors(searchForm.filterActiEnded)}}
                 </div>
+</div>
 
 </div>
 
