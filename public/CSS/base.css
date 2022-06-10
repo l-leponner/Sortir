@@ -232,10 +232,10 @@ section{
     border-color: aliceblue;
     display: block;
     overflow-y: scroll;
-    height: 100px;
+    height: 200px;
     table-layout: fixed;
     width: 60%;
-    margin-left: 30px;
+    margin-left: 20%;
 }
 /*#idtab{*/
 /*    display: block;*/
@@ -292,3 +292,17 @@ section{
     color: aliceblue;
     border-color: #dfdfdf;
 }
+
+tbody tr:nth-child(even) {
+    background-color: darkslateblue;
+}
+
+thead{
+    border-bottom: solid 2px aliceblue;
+}
+
+/*.avatar{*/
+/*    max-width: 120px;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*}*/

@@ -171,8 +171,8 @@
                         {%if app.user not in activity.participants and activity.state.wording == 'Activity opened'%}<button  class="show"><a href="{{path('join', {'activity':activity.id})}}">S'inscrire</a></button>{%endif%}
 
                         {#Action Modifier + Publier#}
-                        {%if activity.state.wording == 'Activity created'%}<button><a href="{{path('change_activity_edit', {'activity':activity.id})}}">Modifier</a></button>
-                            <button><a href="{{path('publish', {'activity':activity.id})}}">Publier</a></button>{%endif%}
+                        {%if activity.state.wording == 'Activity created'%}<button  class="show"><a href="{{path('change_activity_edit', {'activity':activity.id})}}">Modifier</a></button>
+                            <button  class="show"><a href="{{path('publish', {'activity':activity.id})}}">Publier</a></button>{%endif%}
                 {%if activity.state.wording == 'Activity opened' and app.user == activity.organizer%}<button  class="show"><a href="{{path('cancel', {'activity':activity.id})}}">Annuler</a></button>{%endif%}
                     </td>
                 </tr>
