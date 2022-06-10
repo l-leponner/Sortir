@@ -77,14 +77,16 @@ class ActivityRepository extends ServiceEntityRepository
 
         $filterActiEnded = $searchActivityModel->isFilterActiEnded();
 
-
+        // Realisation de la requete
         $queryBuilder = $this->createQueryBuilder('a');
+        // Jointures
         $queryBuilder->join('a.state', 's');
         $queryBuilder->join('a.participants', 'p');
         $queryBuilder->join('a.organizer', 'o');
         $queryBuilder->join('a.place', 'pl');
         $queryBuilder->join('a.campus', 'c');
         $queryBuilder->addSelect('s', 'p', 'o', 'pl', 'c');
+        //Chainage des conditions en fonction des filtres de recherche
         if ($participantCampus){
             $queryBuilder
                 ->andWhere('a.campus = :campus')
@@ -96,15 +98,11 @@ class ActivityRepository extends ServiceEntityRepository
                 ->setParameter('keyWord', '%'.$nameKeyword.'%');
         }
         if ($minDateTimeBeginning){
-//            $minDateTimeBeginning->format('Y-m-d 00:00:01');
-
             $queryBuilder
                 ->andWhere('a.dateTimeBeginning >= :minDateTimeBeginning')
                 ->setParameter('minDateTimeBeginning', $minDateTimeBeginning);
-
         }
         if ($maxDateTimeBeginning){
-//            $maxDateTimeBeginning->format('Y-m-d 23:59:59');
             $queryBuilder
                 ->andWhere(':maxDateTimeBeginning >= a.dateTimeBeginning')
                 ->setParameter('maxDateTimeBeginning', $maxDateTimeBeginning);
@@ -147,8 +145,8 @@ class ActivityRepository extends ServiceEntityRepository
             ->setParameter('user', $currentParticipant);
 
         $queryBuilder->orderBy('a.dateTimeBeginning', 'DESC');
-//            ->setMaxResults(10) <= si je veux avoir un maximum de résultats
 
+        //Récuperation des données en BDD suite à la requête
         $query = $queryBuilder->getQuery();
 
             return $query->getResult();

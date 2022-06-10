@@ -17,11 +17,12 @@ class CancelActivityController extends AbstractController
     #[Route('/cancel/{activity}', name: 'cancel')]
     public function cancel(?Activity $activity, ActivityRepository $activityRepository, Request $request, StateRepository $stateRepository): Response
     {
+        //Vérification si l'utilisateur connecté est l'organisateur de la sortie
         if ($activity->getOrganizer() != $this->getUser()){
             throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour cela.');
         }
 
-//        $defaultData = ['message' => 'Type your message here'];
+
         $motiveForm = $this->createFormBuilder()
             ->add('motive', TextareaType::class, [
                 'label' => 'Motif : ',
