@@ -132,6 +132,9 @@
     </div>
     {%if searchButton != false%}
 
+        {%if lstActivities == null%}
+            <p class="alert">Pas de sorties liées à la recherche</p>
+        {%endif%}
         <table class="tab1">
             <thead>
             <tr id="idtab">
