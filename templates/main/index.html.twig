@@ -8,14 +8,14 @@
 {% block body %}
 
     {%if app.user%}
-        <div class="container infosUser">
-            <div class="row">
-                <p class="divh offset-9 col-3">Date du jour : {{date('now')|date("d/m/Y")}}</p>
+
+            <div class="">
+                <p class="divh ">Date du jour : {{date('now')|date("d/m/Y")}}</p>
             </div>
-            <div class="row">
-                <p class="divh offset-9 col-3">Participant : {{app.user.userIdentifier}}</p>
+            <div class="">
+                <p class="divh ">Participant : {{app.user.userIdentifier}}</p>
             </div>
-        </div>
+
 
     {%endif%}
 
@@ -26,7 +26,7 @@
 
 
         {{form_start(searchForm)}}
-        <div class="container filterContainer">
+        <div class="dis">
 
             <div class="row participantCampus">
         <div class="offset-1 col-3 indexLabel">
@@ -62,7 +62,7 @@
             <div class="row maxDateTimeBeginning">
                 <div class="offset-1 col-3  indexLabel">
         {{form_label(searchForm.maxDateTimeBeginning)}}
-            <</div>
+            </div>
                 <div class="offset-1 col-5">
         {{form_widget(searchForm.maxDateTimeBeginning)}}
         </div>
@@ -109,7 +109,7 @@
 
 </div>
 
-
+        <div class="dis">
         <br>
         <div typeof="submit" >
 
@@ -178,5 +178,8 @@
         </table>
         <br>
     {%endif%}
-    <button class="btnAct"><a href="{{path('activity')}}" id="bt1">Créer une sortie</a></button>
+
+    <button class="btnAct"><a href="{{path('activity')}}" id="">Créer une sortie</a></button>
+
+</div>
 {% endblock %}
